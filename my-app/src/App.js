@@ -13,13 +13,13 @@ function App() {
   const handleSignIn = async (userEmail, userPassword) => {
     try {
       
-      const response = await axios.post('http://localhost:9000/user/signin', { 
+      const response = await axios.post('http://localhost:9000/api/user/signin', { 
         email: userEmail, 
         password: userPassword 
       });
       
       console.log('Sign In Response:', response.data);
-
+      
       setShowSignIn(false);
       } catch (error) {
         console.error('Error during sign in:', error);
@@ -44,3 +44,4 @@ function App() {
 }
 
 export default App;
+

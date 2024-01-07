@@ -3,7 +3,8 @@ import {getUsers,
     getUserById,
     createUser,
     deleteUser,
-    updateUser} from "../dataAcess/UserDA.js";
+    updateUser,
+    getUserByUserNamePasswordEmail} from "../dataAcess/UserDA.js";
 let userRouter = express.Router();
 userRouter.route("/user").post(async (req, res) => {
     return res.status(201).json(await createUser(req.body));
@@ -33,4 +34,5 @@ userRouter.route("/user/signin").post(async (req, res) => {
         res.status(400).json("User not found");
 });
 export default userRouter;
+
 
