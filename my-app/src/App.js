@@ -1,48 +1,46 @@
-import './App.css';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import SignIn from './components/SignIn';
+import './App.css';
 
-class App extends Component {
-  // handleClick()
-  // {
-  //   // Make an HTTP GET request to your backend API
-  //   axios.get('http://localhost:9000/api/users')
-  //     .then((response) => {
-  //       // Log the user list when the request is successful
-  //       console.log('User List:', response.data);
-  //     })
-  //     .catch((error) => {
-  //       // Handle errors if the request fails
-  //       console.error('Error fetching user list:', error);
-  //     });
-  // }
-  async handleClick() {
+function App() {
+  const [showSignIn, setShowSignIn] = useState(true);
+
+  const handleSignInClick = () => {
+    setShowSignIn(false);
+  };
+
+  const handleSignIn = async (userEmail, userPassword) => {
     try {
-      const response = await axios.get('http://localhost:9000/api/users');
-      console.log('User List:', response.data);
-    } catch (error) {
-      console.error('Error fetching user list: ', error);
-    }
-  }
-  async handleClickUser()
-  {
+      
+      const response = await axios.post('http://localhost:9000/user/signin', { 
+        email: userEmail, 
+        password: userPassword 
+      });
+      
+      console.log('Sign In Response:', response.data);
+
+      setShowSignIn(false);
+      } catch (error) {
+        console.error('Error during sign in:', error);
+      }
+  };
+
+  const handleClickUser = async () => {
     try {
       const userId = document.getElementById("userIdInput").value;
       const response = await axios.get(`http://localhost:9000/api/user/${userId}`);
-      
       console.log('User:', response.data);
     } catch (error) {
       console.error('Error fetching user:', error);
     }
-  }
-  render() {
-    return (
-      <div className="App">
-        <button id="btn" onClick={this.handleClick} >Click me</button>
-        <button id="btn2" onClick={this.handleClickUser} >Click me</button>
-        <input type="text" id="userIdInput" placeholder="Enter User ID"></input>
-      </div>
-    );
-  }
+  };
+
+  return (
+    <div className="App">
+      {showSignIn && <SignIn onSignIn={handleSignIn} />}
+    </div>
+  );
 }
+
 export default App;

@@ -1,0 +1,28 @@
+/* SignIn.css */
+.signin-container {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    margin: auto;
+    display: column;
+}
+
+.signin-form input[type="text"],
+.signin-form input[type="email"],
+.signin-form input[type="password"] {
+    background-color: #222;
+    color: white;
+    border: none;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.signin-form button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}

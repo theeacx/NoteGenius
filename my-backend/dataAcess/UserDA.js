@@ -35,12 +35,19 @@ async function updateUser(id, user) {
     }
   }
 
+  //Function to get a user by password and email
+  async function getUserByUserNamePasswordEmail(password, email) {
+    return await User.findOne({where: {password: password, email: email}});
+}
+
+
 
 export {
     getUsers,
     getUserById,
     createUser,
     deleteUser,
-    updateUser
+    updateUser,
+    getUserByUserNamePasswordEmail
 };
 

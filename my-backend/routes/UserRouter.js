@@ -25,5 +25,12 @@ userRouter.route("/user/:id").put(async (req, res) => {
     else
         res.status(200).json(ret.obj)
 });
+userRouter.route("/user/signin").post(async (req, res) => {
+    let user = await getUserByUserNamePasswordEmail(req.body.password, req.body.email);
+    if (user)
+        res.status(200).json(user);
+    else
+        res.status(400).json("User not found");
+});
 export default userRouter;
 
