@@ -5,6 +5,7 @@
 in folderul cu react:
 npm install react-scripts --save
 npm install la tot ce e folosit IAR - axios, cors vedeti voi daca mai e cv
+npm install react-bootstrap
 
 in folder global - iar npm install la toate - express, mysql2, sequelize, nodemon vedeti voi daca mai e cv
 
