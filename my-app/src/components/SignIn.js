@@ -45,13 +45,13 @@ function SignIn({ onSignIn }) {
     <div className="signin-container">
       <form className="signin-form" onSubmit={handleSubmit}>
         <h1>Welcome to APPNAME!</h1>
-        <input
+        <input style = {{marginBottom: '10px'}}
           type="text"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
+        <input style = {{marginBottom: '10px'}}
           type="password"
           placeholder="Password"
           value={password}

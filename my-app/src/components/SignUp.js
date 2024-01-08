@@ -17,7 +17,9 @@ function SignUp({ onSignUpSuccess }) {
     if (password !== confirmPassword) {
       setError("Passwords do not match. Please check and try again.");
     } else if(firstName === '' || lastName === '' || email === '' || password === '' || confirmPassword === '') {
-      setError("Please fill out all fields.");
+      setError("Please fill out all fields."); }
+      else if (email.includes('@stud.ase.ro') === false) {
+        setError("Please use your student email.");
     } else {
       var User = {
         FirstName: firstName,
