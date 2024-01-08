@@ -10,35 +10,46 @@ function App() {
     setShowSignIn(false);
   };
 
+  // const handleSignIn = async (userEmail, userPassword) => {
+  //   try {
+      
+  //     const response = await axios.post('http://localhost:9000/api/user/signin', { 
+  //       email: userEmail, 
+  //       password: userPassword 
+  //     });
+      
+   
+  //     console.log('Sign In Response:', response.data);
+
+
+      
+  //     setShowSignIn(false);
+  //     } catch (error) {
+  //       console.error('Error during sign in:', error);
+  //     }
+  // };
+
   const handleSignIn = async (userEmail, userPassword) => {
     try {
-      
-      const response = await axios.post('http://localhost:9000/api/user/signin', { 
-        email: userEmail, 
-        password: userPassword 
+      const response = await axios.post('http://localhost:9000/api/user/signin', {
+        email: userEmail,
+        password: userPassword,
       });
-      
+  
       console.log('Sign In Response:', response.data);
-      
       setShowSignIn(false);
-      } catch (error) {
-        console.error('Error during sign in:', error);
-      }
-  };
-
-  const handleClickUser = async () => {
-    try {
-      const userId = document.getElementById("userIdInput").value;
-      const response = await axios.get(`http://localhost:9000/api/user/${userId}`);
-      console.log('User:', response.data);
+      return response.data; // Return the user data on successful sign-in
     } catch (error) {
-      console.error('Error fetching user:', error);
+      console.error('Error during sign in:', error);
+      throw error; // Throw the error to be caught by the calling function
     }
   };
 
   return (
     <div className="App">
+      <header className="App-header">
       {showSignIn && <SignIn onSignIn={handleSignIn} />}
+      </header>
     </div>
   );
 }

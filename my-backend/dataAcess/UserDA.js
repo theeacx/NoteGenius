@@ -22,7 +22,7 @@ async function deleteUser(id) {
     return await user.destroy();
 }
 
-
+//Function to update a user
 async function updateUser(id, user) {
     try {
       let updateUser = await getUserById(id);
@@ -39,7 +39,6 @@ async function updateUser(id, user) {
   async function getUserByUserNamePasswordEmail(password, email) {
     return await User.findOne({where: {password: password, email: email}});
 }
-
 
 
 export {
