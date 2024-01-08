@@ -1,7 +1,7 @@
 // SignUp.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import MainPage from './MainPage';  // Import MainPage
+import MainPage from './MainPage';  
 import '../components-style/SignUp.css';
 
 function SignUp({ onSignUpSuccess }) {
@@ -33,7 +33,7 @@ function SignUp({ onSignUpSuccess }) {
       .then((response) => {
         console.log("User created successfully:", response.data);
         onSignUpSuccess();
-        setShowMainPage(true);  // Show MainPage after successful sign-up
+        setShowMainPage(true);  
       })
       .catch((error) => {
         console.error("Error creating user:", error);
@@ -47,6 +47,7 @@ function SignUp({ onSignUpSuccess }) {
       {showMainPage ? (
         <MainPage />
       ) : (
+        <header className="App-header">
         <div className="signup-container">
           <form className="signup-form">
             <input style = {{marginBottom: '10px'}}
@@ -85,6 +86,7 @@ function SignUp({ onSignUpSuccess }) {
             </button>
           </form>
         </div>
+        </header>
       )}
     </div>
   );

@@ -1,0 +1,50 @@
+.card {
+    width: 14rem; 
+    height: 10rem; 
+    margin: 10px;
+    border: 1px solid #22252b;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+    background-color: #282c34;
+    color: white;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    transition: transform 0.2s ease-in-out; 
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-title {
+    margin: 8px; 
+    color: white;
+    font-weight: bold;
+    font-size: 1rem; 
+  }
+  
+  .card-text {
+    margin: 8px; 
+    color: white;
+    font-size: 0.9rem; 
+  }
+  
+  .user-text {
+    margin: 8px; 
+    color: #61dafb;
+    font-size: 0.8rem;
+  }
+  
+  .tag-container {
+    margin-top: 8px; 
+  }
+  
+  .my-tag {
+    display: inline-block;
+    padding: 4px 8px; 
+    margin-right: 4px; 
+    border-radius: 4px; 
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.8rem; 
+  }
+  

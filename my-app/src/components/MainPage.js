@@ -1,37 +1,113 @@
-import React from 'react';
-import MyCard from './MyCard';
-import { Container, Row, Col } from 'react-bootstrap';
-import MyNavbar from './MyNavbar';
-
-// BIG BIG BIG BIG BIG WIP
+import React from "react";
+import MyCard from "./MyCard";
+import { Container, Row, Col } from "react-bootstrap";
+import "../components-style/MainPage.css";
 
 function MainPage() {
   return (
     <React.Fragment>
-      <MyNavbar />
       <Container>
         <Row>
-          <Col>
-            <MyCard
-              title="Card 1"
-              content="This is the content of card 1"
-              onClick={() => console.log('Card 1 clicked')}
-            />
-          </Col>
-          <Col>
-            <MyCard
-              title="Card 2"
-              content="This is the content of card 2"
-              onClick={() => console.log('Card 2 clicked')}
-            />
-          </Col>
-          <Col>
-            <MyCard
-              title="Card 3"
-              content="This is the content of card 3"
-              onClick={() => console.log('Card 3 clicked')}
-            />
-          </Col>
+          <MyCard
+            title="Card 1"
+            content="This is the content of card 1"
+            user="User 1"
+            subject="Subject 1"
+            group="Group 1"
+            tags={[
+              "Tag1",
+              "Tag2",
+              "Tag3",
+              "Tag4",
+              "Tag5",
+              "Tag6",
+              "Tag7",
+              "Tag8",
+              "Tag9",
+            ]}
+            onClick={() => console.log("Card 1 clicked")}
+          />
+
+          <MyCard
+            title="Card 1"
+            content="This is the content of card 1"
+            user="User 1"
+            subject="Subject 1"
+            group="Group 1"
+            tags={["Tag1", "Tag2", "Tag3", "Tag4"]}
+            onClick={() => console.log("Card 1 clicked")}
+          />
+
+          <MyCard
+            title="Card 1"
+            content="This is the content of card 1"
+            user="User 1"
+            subject="Subject 1"
+            group="Group 1"
+            tags={["Tag1", "Tag8", "Tag9"]}
+            onClick={() => console.log("Card 1 clicked")}
+          />
+
+          <MyCard
+            title="Card 1"
+            content="This is the content of card 1"
+            user="User 1"
+            subject="Subject 1"
+            group="Group 1"
+            tags={[
+              "Tag1",
+              "Tag7",
+              "Tag8",
+              "Tag9",
+            ]}
+            onClick={() => console.log("Card 1 clicked")}
+          />
+
+          <MyCard
+            title="Card 1"
+            content="This is the content of card 1"
+            user="User 1"
+            subject="Subject 1"
+            group="Group 1"
+            tags={[
+              "Tag1",
+              "Tag2",
+              "Tag3",
+              "Tag4",
+              "Tag5",
+              "Tag6",
+            ]}
+            onClick={() => console.log("Card 1 clicked")}
+          />
+
+          <MyCard
+            title="Card 1"
+            content="This is the content of card 1"
+            user="User 1"
+            subject="Subject 1"
+            group="Group 1"
+            tags={[
+              "Tag3",
+              "Tag4",
+              "Tag5",
+            ]}
+            onClick={() => console.log("Card 1 clicked")}
+          />
+
+          <MyCard
+            title="Card 1"
+            content="This is the content of card 1"
+            user="User 1"
+            subject="Subject 1"
+            group="Group 1"
+            tags={[
+              "Tag1",
+              "Tag2",
+              "Tag3",
+              "Tag4",
+            ]}
+            onClick={() => console.log("Card 1 clicked")}
+          />
         </Row>
       </Container>
     </React.Fragment>
