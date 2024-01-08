@@ -1,33 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import SignIn from './components/SignIn';
+import MainPage from './components/MainPage'; // Import MainPage component
 import './App.css';
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
+  const [redirectToMain, setRedirectToMain] = useState(false);
 
   const handleSignInClick = () => {
     setShowSignIn(false);
   };
-
-  // const handleSignIn = async (userEmail, userPassword) => {
-  //   try {
-      
-  //     const response = await axios.post('http://localhost:9000/api/user/signin', { 
-  //       email: userEmail, 
-  //       password: userPassword 
-  //     });
-      
-   
-  //     console.log('Sign In Response:', response.data);
-
-
-      
-  //     setShowSignIn(false);
-  //     } catch (error) {
-  //       console.error('Error during sign in:', error);
-  //     }
-  // };
 
   const handleSignIn = async (userEmail, userPassword) => {
     try {
@@ -35,24 +18,24 @@ function App() {
         email: userEmail,
         password: userPassword,
       });
-  
+
       console.log('Sign In Response:', response.data);
+      setRedirectToMain(true); 
       setShowSignIn(false);
-      return response.data; // Return the user data on successful sign-in
+      return response.data; 
     } catch (error) {
       console.error('Error during sign in:', error);
-      throw error; // Throw the error to be caught by the calling function
+      throw error; 
     }
   };
-
   return (
     <div className="App">
       <header className="App-header">
-      {showSignIn && <SignIn onSignIn={handleSignIn} />}
+        {showSignIn && <SignIn onSignIn={handleSignIn} />}
+        {redirectToMain && <MainPage />} 
       </header>
     </div>
   );
 }
 
 export default App;
-

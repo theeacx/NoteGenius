@@ -12,14 +12,19 @@ function SignIn({ onSignIn }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (email && password) {
       onSignIn(email, password)
-        .then(() => setRedirectToMain(true))
+        .then(() => {
+          setRedirectToMain(true);
+          console.log("Redirecting to MainPage...");
+        })
         .catch(() => {
+          setRedirectToMain(false);
           alert('Sign in failed. Please try again.');
         });
     } else {
+      setRedirectToMain(false);
       alert('Email and password are required.');
     }
   };
@@ -29,13 +34,10 @@ function SignIn({ onSignIn }) {
   };
 
   const handleSignUpSuccess = () => {
-    setShowSignUp(false);
     setRedirectToMain(true);
   };
 
-  if (redirectToMain==true) {
-    return <MainPage />;
-  }
+ 
 
   if (showSignUp) {
     return <SignUp onSignUpSuccess={handleSignUpSuccess} />;
