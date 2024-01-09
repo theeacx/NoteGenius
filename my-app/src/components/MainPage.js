@@ -34,7 +34,7 @@ function MainPage({ userId }) {
   React.useEffect(() => {
     if (userId) {
       getNotesByUserId(userId);
-      getNotesWithFilterAndPagination(userId);
+      // getNotesWithFilterAndPagination(userId);
     }
   }, [userId]);
 
