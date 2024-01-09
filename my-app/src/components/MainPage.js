@@ -7,6 +7,8 @@ import axios from 'axios';
 
 function MainPage({ userId }) {
 
+  console.log('userId in MainPage:', userId);
+
   const getNotesByUserId = async (id) => {
     try {
       const response = await axios.get(`http://localhost:9000/api/note/noteUser/${id}`);

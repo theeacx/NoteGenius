@@ -13,13 +13,12 @@ function SignIn({ onSignIn }) {
   const [redirectToMain, setRedirectToMain] = useState(false);
   const [userId, setUserId] = useState(null);
   
-
   const handleSubmit = (e) => {
     e.preventDefault();
   
     if (email && password) {
       onSignIn(email, password)
-        .then(() => {
+        .then((response) => {
           setRedirectToMain(true);
           console.log("Redirecting to MainPage...");
         })
@@ -28,22 +27,6 @@ function SignIn({ onSignIn }) {
           alert('Sign in failed. Please try again.');
         });
 
-        const user = async function(email, password) {
-          try { 
-              const response = await axios.get('http://localhost:9000/api/user/signin', {
-                email: email,
-                password: password,
-               });
-              console.log('User:', response.data);
-              setUserId(response.data.id);
-              return response.data;
-          }catch (error) {
-            console.error('Error during displaying the user:', error);
-            throw error; 
-          }
-        };
-        
-        
     } else {
       setRedirectToMain(false);
       alert('Email and password are required.');
@@ -59,9 +42,6 @@ function SignIn({ onSignIn }) {
     setRedirectToMain(true);
   };
 
-  if (redirectToMain && userId) {
-    return <MainPage userId={userId} />;
-  }
 
   if (showSignUp) {
     return <SignUp onSignUpSuccess={handleSignUpSuccess} />;

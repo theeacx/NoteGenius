@@ -7,6 +7,7 @@ import './App.css';
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
   const [redirectToMain, setRedirectToMain] = useState(false);
+  const [userId, setUserId] = useState(null); 
 
   const handleSignInClick = () => {
     setShowSignIn(false);
@@ -20,6 +21,7 @@ function App() {
       });
 
       console.log('Sign In Response:', response.data);
+      setUserId(response.data.UserID);
       setRedirectToMain(true); 
       setShowSignIn(false);
       return response.data; 
@@ -32,7 +34,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         {showSignIn && <SignIn onSignIn={handleSignIn} />}
-        {redirectToMain && <MainPage />} 
+        {redirectToMain && <MainPage userId={userId} />} 
       </header>
     </div>
   );
