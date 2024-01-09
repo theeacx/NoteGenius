@@ -1,21 +1,87 @@
-.container {
-    margin-top: 20px;
-  }
-  
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
-  .col {
-    flex-basis: calc(33.33% - 20px); 
-    margin: 10px;
-  }
-  
+/* MainPage.css */
 
-  @media (max-width: 768px) {
-    .col {
-      flex-basis: calc(50% - 20px);
-    }
+/* Ensure the main container takes full width and no padding around the edges */
+.container-fluid {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Style the search bar */
+.search-bar {
+  padding: 1rem;
+  background: #35375f; /* Light grey background to match wireframe */
+  border-bottom: 1px solid #35375f; /* Separates search bar from the cards */
+  width: 50%;
+  margin: 0;
+  background-color: #22252b;
+}
+
+.search-bar input[type="text"] {
+  width: calc(100% - 2rem); /* Full width with padding */
+  padding: 0.5rem;
+  margin: 0 auto;
+  display: block;
+  border: 1px solid #35375f;
+  border-radius: 4px;
+}
+
+/* Style the card container with scroll */
+.card-container {
+  height: calc(100vh - 50px); /* Adjust the height as needed */
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding: 1rem;
+}
+
+/* Style for each card */
+.my-card {
+  margin-bottom: 1rem; /* Space between cards */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+/* Style the menu column */
+.menu-column {
+  padding: 0;
+  height: 100vh; /* Full height viewport */
+  border-left: 1px solid #ddd; /* Separating line between cards and menu */
+  background: #f8f9fa; 
+}
+
+/* Style for the menu and its items */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer; /* Indicates the item is clickable */
+}
+
+/* Additional options styling */
+.menu-options {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Fix the menu on the right side */
+@media (min-width: 992px) {
+  .menu-column {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px; /* Or whatever width you want */
   }
+
+  /* Adjust the main card container when the screen is wide enough */
+  .card-container {
+    margin-right: 300px; /* Same as the width of the menu column */
+  }
+}

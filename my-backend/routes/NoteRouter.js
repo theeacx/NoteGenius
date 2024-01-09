@@ -4,7 +4,8 @@ import {getNotes,
         deleteNote,
         createNote,
         updateNote,
-        getNotesWithFilterAndPagination} from "../dataAcess/NoteDA.js";
+        getNotesWithFilterAndPagination,
+        getNotesByUserId} from "../dataAcess/NoteDA.js";
 let noteRouter = express.Router();
 noteRouter.route("/note").post(async (req, res) => {
     return res.status(201).json(await createNote(req.body));
@@ -27,7 +28,11 @@ noteRouter.route("/note/:id").put(async (req, res) => {
         res.status(200).json(ret.obj)
 });
 
-noteRouter.route('/noteFilter').get( async (req, res) => {
+noteRouter.route('/note/noteFilter/:id').get( async (req, res) => {
     return res.json(await getNotesWithFilterAndPagination(req.query));
+})
+
+noteRouter.route('/note/noteUser/:id').get( async (req, res) => {
+    return res.json(await getNotesByUserId(req.params.id));
 })
 export default noteRouter;

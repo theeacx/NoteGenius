@@ -40,7 +40,6 @@ async function updateUser(id, user) {
     return await User.findOne({where: {password: password, email: email}});
 }
 
-
 export {
     getUsers,
     getUserById,

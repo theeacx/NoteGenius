@@ -27,15 +27,6 @@ userRouter.route("/user/:id").put(async (req, res) => {
     else
         res.status(200).json(ret.obj)
 });
-// userRouter.route("/user/signin").post(async (req, res) => {
-//     if(!req.body.email || !req.body.password)
-//         res.status(400).json("Missing email or password");
-//     let user = await getUserByUserNamePasswordEmail(req.body.password, req.body.email);
-//     if (user)
-//         res.status(200).json(user);
-//     else
-//         res.status(400).json("User not found");
-// });
 userRouter.route("/user/signin").post(async (req, res) => {
     try {
         if (!req.body.email || !req.body.password) {

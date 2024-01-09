@@ -3,17 +3,53 @@ import MyCard from "./MyCard";
 import MyMenu from "./MyMenu";
 import { Container, Row, Col } from "react-bootstrap";
 import "../components-style/MainPage.css";
+import axios from 'axios';
 
-function MainPage() {
+function MainPage({ userId }) {
+
+  const getNotesByUserId = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/note/noteUser/${id}`);
+      console.log('Personal Notes:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error during displaying the personal notes:', error);
+      throw error;
+    }
+  };
+
+  const getNotesWithFilterAndPagination = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/note/noteFilter/${id}`);
+      console.log('Filtered Notes:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error during displaying the filtered notes:', error);
+      throw error;
+    }
+  };
+
+  React.useEffect(() => {
+    if (userId) {
+      getNotesByUserId(userId);
+      getNotesWithFilterAndPagination(userId);
+    }
+  }, [userId]);
+
   return (
     <React.Fragment>
-      <Container>
+      <Container fluid className="main-page-container">
+        <Row>
+          {/* Search Bar */}
+          <Col md={12} className="search-bar">
+            <input type="text" placeholder="search by title" />
+          </Col>
+        </Row>
         <Row>
           {/* Left Column - List of Cards */}
-          <Col md={8}>
+          <Col md={8} className="card-list">
             <Row>
-              {/* Render your MyCard components here */}
-              <MyCard
+            <MyCard
                 title="Card 1"
                 content="This is the content of card 1"
                 user="User 1"
@@ -119,19 +155,20 @@ function MainPage() {
                   "Tag8",
                   "Tag9",
                 ]}
-                onClick={() => console.log("Card 6 clicked")}
-                />  
+                onClick={() => console.log("Card 6 clicked")}/>
             </Row>
           </Col>
 
           {/* Right Column - Menu */}
-          <Col md={4}>
-          <MyMenu />
+          <Col md={4} className="menu-column">
+            <MyMenu />
           </Col>
         </Row>
       </Container>
     </React.Fragment>
   );
+
+
 }
 
 export default MainPage;

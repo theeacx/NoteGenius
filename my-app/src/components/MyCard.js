@@ -2,9 +2,12 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import MyTag from './MyTag';
 import '../components-style/MyCard.css';
+import axios from 'axios';
 
 function MyCard(props) {
   const { noteTitle, content, user, subject, group, onClick, tags } = props;
+
+  
 
   const getTagColor = (tagName) => {
     const tagColors = {

@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import '../components-style/SignIn.css';
 import SignUp from '../components/SignUp';
 import MainPage from './MainPage';
+import axios from 'axios';
+
 
 function SignIn({ onSignIn }) {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSignUp, setShowSignUp] = useState(false);
   const [redirectToMain, setRedirectToMain] = useState(false);
+  const [userId, setUserId] = useState(null);
   
 
   const handleSubmit = (e) => {
@@ -23,10 +27,28 @@ function SignIn({ onSignIn }) {
           setRedirectToMain(false);
           alert('Sign in failed. Please try again.');
         });
+
+        const user = async function(email, password) {
+          try { 
+              const response = await axios.get('http://localhost:9000/api/user/signin', {
+                email: email,
+                password: password,
+               });
+              console.log('User:', response.data);
+              setUserId(response.data.id);
+              return response.data;
+          }catch (error) {
+            console.error('Error during displaying the user:', error);
+            throw error; 
+          }
+        };
+        
+        
     } else {
       setRedirectToMain(false);
       alert('Email and password are required.');
-    }
+    }    
+    
   };
 
   const handleSignUpClick = () => {
@@ -37,7 +59,9 @@ function SignIn({ onSignIn }) {
     setRedirectToMain(true);
   };
 
- 
+  if (redirectToMain && userId) {
+    return <MainPage userId={userId} />;
+  }
 
   if (showSignUp) {
     return <SignUp onSignUpSuccess={handleSignUpSuccess} />;
@@ -69,6 +93,9 @@ function SignIn({ onSignIn }) {
       </form>
     </div>
   );
+
+
 }
+
 
 export default SignIn;
