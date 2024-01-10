@@ -5,7 +5,7 @@ import '../components-style/MyCard.css';
 import axios from 'axios';
 
 function MyCard(props) {
-  const { title, content, userid, subjectid, groupid, onClick, tags } = props;
+  const { title, content, userid, subjectid, groupid, onClick, onDelete, tags } = props;
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
 
