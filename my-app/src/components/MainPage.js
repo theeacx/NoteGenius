@@ -11,6 +11,22 @@ function MainPage({ userId }) {
 
   const [group, setGroupId] = useState(null);
 
+  const handleDelete = async (noteID) => {
+    try {
+      const response = await axios.delete(`http://localhost:9000/api/note/${noteID}`);
+      console.log('Note deleted:', response.data);
+      
+      //delete the note from the list of notes
+      const newNotes = personalNotes.filter((note) => note.NoteID !== noteID);
+      setPersonalNotes(newNotes);
+
+
+    } catch (error) {
+      console.error('Error during deleting the note:', error);
+      
+    }
+  };
+
 
   const getNotesByUserId = async (id) => {
     try {
@@ -49,7 +65,7 @@ function MainPage({ userId }) {
             <Row>
               {personalNotes.map((note) => (
                 <MyCard
-                  key={note.NoteID} 
+                  key={note.NoteID}
                   title={note.Title}
                   content={note.Content}
                   userid={note.UserID}
@@ -57,6 +73,7 @@ function MainPage({ userId }) {
                   groupid={1} // note.GroupID
                   tags = {['Tag1', 'Tag2', 'Tag3']}
                   onClick={() => console.log(`Card ${note.id} clicked`)}
+                  onDelete={() => handleDelete(note.NoteID)}
                 />
               ))}
             </Row>

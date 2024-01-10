@@ -5,21 +5,11 @@ import '../components-style/MyCard.css';
 import axios from 'axios';
 
 function MyCard(props) {
-  const { title, content, userid, subjectid, groupid, onClick, tags } = props;
+  const { title, content, userid, subjectid, groupid, onClick, tags, onDelete } = props;
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
 
-  // const handleDelete = async (e) => {
-  //   e.preventDefault();
-  //   //DE VERIFICAT:
-  //   try {
-  //     const response = await axios.delete(`http://localhost:9000/api/note/${props.id}`);
-  //     console.log('Note deleted:', response.data);
-  //   } catch (error) {
-  //     console.error('Error during deleting the note:', error);
-  //     throw error;
-  //   }
-  // }
+
 
   const getSubjectById = async (id) => {
     try {
@@ -45,15 +35,15 @@ function MyCard(props) {
   }
 
   //when i press the delete button i want to delete the note from the database
-  const deleteNote = async (id) => {
-    try {
-      const response = await axios.delete(`http://localhost:9000/api/note/${id}`);
-      console.log('Note deleted:', response.data);
-    } catch (error) {
-      console.error('Error during deleting the note:', error);
-      throw error;
-    }
-  }
+  // const deleteNote = async (id) => {
+  //   try {
+  //     const response = await axios.delete(`http://localhost:9000/api/note/${id}`);
+  //     console.log('Note deleted:', response.data);
+  //   } catch (error) {
+  //     console.error('Error during deleting the note:', error);
+  //     throw error;
+  //   }
+  // }
   
 
 
@@ -83,7 +73,7 @@ function MyCard(props) {
     return tagColors[tagName] || 'transparent';
   };
 
-  return (
+  return ( 
     <Card onClick={onClick}>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
@@ -95,8 +85,8 @@ function MyCard(props) {
             <MyTag key={index} text={tag} color={getTagColor(tag)} />
           ))}
         </div>
-        <button id="deleteButton" onClick={deleteNote}>Delete</button>
-      </Card.Body>
+        <button id="deleteButton" onClick={onDelete}>Delete</button>
+      </Card.Body> 
     </Card>
   );
 }
