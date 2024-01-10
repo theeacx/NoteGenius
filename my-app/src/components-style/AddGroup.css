@@ -1,0 +1,94 @@
+/* AddGroup.css */
+
+#add-group-container {
+    text-align: center;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+    margin-top: 20px;
+    background-color: #282c34; 
+    border: 1px solid #22252b;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+  }
+  
+  #add-group-container.open {
+    height: 220px;
+  }
+  
+  #add-group-container button,
+  #add-group-container input {
+    margin-bottom: 10px;
+  }
+  
+  #add-group-container .group-form {
+    text-align: left;
+    padding: 10px;
+  }
+  
+  #add-group-container label,
+  #add-group-container button {
+    color: #fff;
+  }
+  
+  #add-group-container input {
+    width: 100%;
+    padding: 8px; 
+    background-color: #282c34; 
+    border: 1px solid #22252b;
+    border-radius: 8px;
+    color: white; 
+  }
+  
+  #add-group-container button {
+    background-color: #4e5488;
+    color: white;
+    padding: 10px;
+    border: 1px solid #525874;
+    border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+    cursor: pointer;
+  }
+  
+  #add-group-container button:hover {
+    background-color: #525874;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  #add-group-container .form-select {
+    width: 100%; 
+    padding: 8px; 
+    margin-bottom: 8px; 
+    background-color: #282c34; 
+    border: 1px solid #22252b;
+    border-radius: 8px;
+    color: white; 
+  }
+  
+  #add-group-container .form-select:hover {
+    background-color: #35375f;
+    color: #6b73bd;
+    border-radius: 8px;
+  }
+  
+  #add-group-container .user-btn {
+    background-color: #4e5488;
+    color: white;
+    padding: 10px;
+    border: 1px solid #525874;
+    border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+    cursor: pointer;
+  }
+  
+  #add-group-container .user-btn:hover {
+    background-color: #525874;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  

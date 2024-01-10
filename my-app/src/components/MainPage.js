@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyCard from "./MyCard";
 import MyMenu from "./MyMenu";
+import AddNote from "./AddNote";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from 'axios';
 import "../components-style/MainPage.css";
@@ -38,7 +39,8 @@ function MainPage({ userId }) {
           </Col>
           {/*Add card button */}
           <Col md={12} className="add-card-button">
-            <button>Add New Note</button>
+            {/* <button>Add New Note</button> */}
+            <AddNote />
           </Col>
         </Row>
         <Row>

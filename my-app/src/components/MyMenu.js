@@ -1,4 +1,5 @@
 import React from 'react';
+import AddGroup from './AddGroup';
 import '../components-style/MyMenu.css';
 
 function MyMenu() {
@@ -26,6 +27,7 @@ function MyMenu() {
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>
+        <AddGroup />
       </ul>
     </div>
   );
