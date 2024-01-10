@@ -1,15 +1,19 @@
 // AddNote.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../components-style/AddNote.css';
+import axios from 'axios';
 
-function AddNote() {
+function AddNote({ user, onNoteAdded }) {
+  //NU STIU DACA E BINE SA PUN AICI onNoteAdded
   const [isFormVisible, setFormVisible] = useState(false);
   const [noteData, setNoteData] = useState({
-    title: '',
-    content: '',
-    subject: '',
+    Title: '',
+    Content: '',
+    SubjectID: '',  // Assuming the backend expects 'SubjectID'
+    UserID: '',   // Assuming you want to send the user ID to the backend
   });
+
 
   const toggleFormVisibility = () => {
     setFormVisible(!isFormVisible);
@@ -23,16 +27,56 @@ function AddNote() {
     });
   };
 
-  const handleSaveNote = () => {
-    // save data logic
-    console.log('Note Data:', noteData);
-
+  const handleSubjectChange = (e) => {
     setNoteData({
-      title: '',
-      content: '',
-      subject: '',
+      ...noteData,
+      SubjectID: e.target.value,  // Changed to 'SubjectID' to match the state
     });
-    setFormVisible(false);
+  };
+
+  useEffect(() => {
+    setNoteData((prevNoteData) => ({
+      ...prevNoteData,
+      UserID: user // Update UserID with the new user prop
+    }));
+  }, [user]); 
+
+  const handleSaveNote = () => {
+    console.log('Note Data:', noteData);
+    // if (!noteData.Title || !noteData.Content || !noteData.SubjectID || !noteData.UserID) {
+    //   console.error("All fields are required.");
+    //   return;
+    // }
+    axios.post('http://localhost:9000/api/note', noteData, {
+      headers: {'Content-Type': 'application/json'},
+    })
+    .then((response) => {
+      console.log("Note created successfully:", response.data);
+      // Call the onNoteAdded callback with the new note
+      onNoteAdded(response.data.obj); // Assuming response.data.obj contains the new note
+      // ... rest of your code ...
+    })
+    .catch((error) => {
+      console.error("Error creating note:", error);
+    });
+
+    // axios.post('http://localhost:9000/api/note', noteData, {
+    //   headers: {'Content-Type': 'application/json'},
+    // })
+    // .then((response) => {
+    //   console.log("Note created successfully:", response.data);
+    //   // Reset the form and hide it after successful save
+    //   setNoteData({
+    //     Title: '',
+    //     Content: '',
+    //     SubjectID: '',
+    //     UserID: user,
+    //   });
+    //   setFormVisible(false);
+    // })
+    // .catch((error) => {
+    //   console.error("Error creating note:", error);
+    // });
   };
 
   return (
@@ -40,12 +84,25 @@ function AddNote() {
       <button onClick={toggleFormVisibility}>Add Note</button>
       {isFormVisible && (
         <div className="note-form">
+          <select 
+            className="form-select" 
+            aria-label="Default select example" 
+            value={noteData.SubjectID} // Controlled component with value prop
+            onChange={handleSubjectChange}
+            name="SubjectID"
+          >
+            <option value="">Select Subject</option>  // Use empty string for unselected state
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+
           <label htmlFor="noteTitle">Note Title:</label>
           <input
             type="text"
             id="noteTitle"
-            name="title"
-            value={noteData.title}
+            name="Title"  // Name attribute matches the state key
+            value={noteData.Title}
             onChange={handleInputChange}
             placeholder="Enter note title"
           />
@@ -53,21 +110,11 @@ function AddNote() {
           <label htmlFor="noteContent">Note Content:</label>
           <textarea
             id="noteContent"
-            name="content"
-            value={noteData.content}
+            name="Content"  // Name attribute matches the state key
+            value={noteData.Content}
             onChange={handleInputChange}
             placeholder="Enter note content"
           ></textarea>
-
-          <label htmlFor="noteSubject">Note Subject:</label>
-          <input
-            type="text"
-            id="noteSubject"
-            name="subject"
-            value={noteData.subject}
-            onChange={handleInputChange}
-            placeholder="Enter note subject"
-          />
 
           <button onClick={handleSaveNote}>Save Note</button>
         </div>
@@ -77,3 +124,5 @@ function AddNote() {
 }
 
 export default AddNote;
+
+

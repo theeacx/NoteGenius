@@ -40,4 +40,6 @@ function App() {
   );
 }
 
+// console.log('User ID:', userId);
+
 export default App;

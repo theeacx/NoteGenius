@@ -5,21 +5,10 @@ import '../components-style/MyCard.css';
 import axios from 'axios';
 
 function MyCard(props) {
-  const { title, content, userid, subjectid, groupid, onClick, tags } = props;
+  const { title, content, userid, subjectid, groupid, onClick, tags, onDelete } = props;
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
 
-  // const handleDelete = async (e) => {
-  //   e.preventDefault();
-  //   //DE VERIFICAT:
-  //   try {
-  //     const response = await axios.delete(`http://localhost:9000/api/note/${props.id}`);
-  //     console.log('Note deleted:', response.data);
-  //   } catch (error) {
-  //     console.error('Error during deleting the note:', error);
-  //     throw error;
-  //   }
-  // }
 
   const getSubjectById = async (id) => {
     try {
@@ -55,7 +44,17 @@ function MyCard(props) {
     }
   }
   
-
+  //create a new note based on the data from the form
+  // const createNote = async (note) => {
+  //   try {
+  //     const response = await axios.post('http://localhost:9000/api/note/', note, {
+  //       headers: {'Content-Type': 'application/json'},
+  //     })
+  //     console.log("Note created successfully:", response.data);
+  //   } catch (error) {
+  //     console.error("Error creating note:", error);
+  //   }
+  // }
 
   useEffect(() => {
     if (userid) {
@@ -95,7 +94,7 @@ function MyCard(props) {
             <MyTag key={index} text={tag} color={getTagColor(tag)} />
           ))}
         </div>
-        <button id="deleteButton" onClick={deleteNote}>Delete</button>
+        <button id="deleteButton" onClick={onDelete}>Delete</button>
       </Card.Body>
     </Card>
   );

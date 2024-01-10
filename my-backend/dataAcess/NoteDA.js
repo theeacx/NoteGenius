@@ -13,7 +13,7 @@ async function getNoteById(id) {
 }
 async function deleteNote(noteId) {
   try {
-    const note = await NoteModel.findByPk(noteId);
+    const note = await Note.findByPk(noteId);
     if (!note) {
       console.error('Note not found with id:', noteId);
     } else {
@@ -24,10 +24,32 @@ async function deleteNote(noteId) {
     throw error;
   }
 }
+// async function createNote(note) {
+//   try {
+//     let createdNote = await Note.create(note, { include: ["Tags"] });
+//     return { error: false, msg: "Note created successfully", obj: createdNote };
+//   } catch (error) {
+//     console.error('Error during note creation:', error);
+//     return { error: true, msg: "Error creating note", details: error.message };
+//   }
+// }
+async function createNote (note) {
+  try {
+    // Check if the SubjectID exists in the subject table
+    const subjectExists = await Subject.findByPk(note.SubjectID);
+    if (!subjectExists) {
+      return { error: true, msg: "Invalid SubjectID" };
+    }
 
-async function createNote(note) {
-    return await Note.create(note);
+    let createdNote = await Note.create(note);
+    return { error: false, msg: "Note created successfully", obj: createdNote };
+  } catch (error) {
+    // Handle and log the error
+    console.error('Error during note creation:', error);
+    return { error: true, msg: "Error creating note" };
+  }
 }
+
 async function updateNote(id, note) {
     try {
       let updateNote = await getNoteById(id);

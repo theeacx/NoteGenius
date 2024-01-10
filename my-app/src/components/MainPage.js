@@ -11,6 +11,21 @@ function MainPage({ userId }) {
 
   const [group, setGroupId] = useState(null);
 
+  const handleDelete = async (noteID) => {
+    try {
+      const response = await axios.delete(`http://localhost:9000/api/note/${noteID}`);
+      console.log('Note deleted:', response.data);
+      //delete the note from the list of notes
+      const newNotes = personalNotes.filter((note) => note.NoteID !== noteID);
+      setPersonalNotes(newNotes);
+      
+
+    } catch (error) {
+      console.error('Error during deleting the note:', error);
+      
+    }
+  };
+
 
   const getNotesByUserId = async (id) => {
     try {
@@ -23,11 +38,20 @@ function MainPage({ userId }) {
     }
   };
 
+  //aici am modificat, am incercat sa adaug notita noua in lista de notite si sa o afisez
+  //da s a dus totul
+  const addNewNote = (newNote) => {
+    // Add the new note to the personalNotes state
+    setPersonalNotes([...personalNotes, newNote]);
+  };
+
   useEffect(() => {
     if (userId) {
       getNotesByUserId(userId);
     }
   }, [userId]);
+
+
 
   return (
     <React.Fragment>
@@ -40,7 +64,8 @@ function MainPage({ userId }) {
           {/*Add card button */}
           <Col md={12} className="add-card-button">
             {/* <button>Add New Note</button> */}
-            <AddNote />
+            {/*AICI AM INCERCAT SA I DAU ADDNEWNOTE*/}
+            <AddNote user={userId} onNoteAdded={addNewNote} />
           </Col>
         </Row>
         <Row>
@@ -49,7 +74,7 @@ function MainPage({ userId }) {
             <Row>
               {personalNotes.map((note) => (
                 <MyCard
-                  key={note.NoteID} 
+                  key={note.NoteID}
                   title={note.Title}
                   content={note.Content}
                   userid={note.UserID}
@@ -57,6 +82,7 @@ function MainPage({ userId }) {
                   groupid={1} // note.GroupID
                   tags = {['Tag1', 'Tag2', 'Tag3']}
                   onClick={() => console.log(`Card ${note.id} clicked`)}
+                  onDelete={() => handleDelete(note.NoteID)}
                 />
               ))}
             </Row>
