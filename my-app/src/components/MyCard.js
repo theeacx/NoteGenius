@@ -5,7 +5,7 @@ import '../components-style/MyCard.css';
 import axios from 'axios';
 
 function MyCard(props) {
-  const { noteTitle, content, userid, subjectid, groupid, onClick, tags } = props;
+  const { title, content, userid, subjectid, groupid, onClick, tags } = props;
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
 
@@ -28,6 +28,7 @@ function MyCard(props) {
     } catch (error) {
       console.error('Error during displaying the personal notes:', error);
       throw error;
+
     }
   }
 
@@ -60,9 +61,10 @@ function MyCard(props) {
   return (
     <Card onClick={onClick}>
       <Card.Body>
-        <Card.Title>{noteTitle}</Card.Title>
+        <Card.Title>{title}</Card.Title>
         {user && <Card.Text>{user.FirstName} {user.LastName}</Card.Text>}
         {subject && <Card.Text>{subject.SubjectName}</Card.Text>}
+
         <div>
           {tags.map((tag, index) => (
             <MyTag key={index} text={tag} color={getTagColor(tag)} />

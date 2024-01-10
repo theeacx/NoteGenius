@@ -54,7 +54,7 @@ function MainPage({ userId }) {
                   content={note.Content}
                   userid={note.UserID}
                   subjectid={note.SubjectID}
-                  // groupid={note.group}
+                  groupid={1} // note.GroupID
                   tags = {['Tag1', 'Tag2', 'Tag3']}
                   onClick={() => console.log(`Card ${note.id} clicked`)}
                 />
