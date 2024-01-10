@@ -9,17 +9,17 @@ function MyCard(props) {
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
 
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    //DE VERIFICAT:
-    // try {
-    //   const response = await axios.delete(`http://localhost:9000/api/note/${props.id}`);
-    //   console.log('Note deleted:', response.data);
-    // } catch (error) {
-    //   console.error('Error during deleting the note:', error);
-    //   throw error;
-    // }
-  }
+  // const handleDelete = async (e) => {
+  //   e.preventDefault();
+  //   //DE VERIFICAT:
+  //   try {
+  //     const response = await axios.delete(`http://localhost:9000/api/note/${props.id}`);
+  //     console.log('Note deleted:', response.data);
+  //   } catch (error) {
+  //     console.error('Error during deleting the note:', error);
+  //     throw error;
+  //   }
+  // }
 
   const getSubjectById = async (id) => {
     try {
@@ -43,6 +43,19 @@ function MyCard(props) {
 
     }
   }
+
+  //when i press the delete button i want to delete the note from the database
+  const deleteNote = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:9000/api/note/${id}`);
+      console.log('Note deleted:', response.data);
+    } catch (error) {
+      console.error('Error during deleting the note:', error);
+      throw error;
+    }
+  }
+  
+
 
   useEffect(() => {
     if (userid) {
@@ -82,7 +95,7 @@ function MyCard(props) {
             <MyTag key={index} text={tag} color={getTagColor(tag)} />
           ))}
         </div>
-        <button id="deleteButton" onClick={handleDelete}>Delete</button>
+        <button id="deleteButton" onClick={deleteNote}>Delete</button>
       </Card.Body>
     </Card>
   );

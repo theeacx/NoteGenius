@@ -11,10 +11,20 @@ async function getNotes() {
 async function getNoteById(id) {
     return await Note.findByPk(id,{include: ["Tags"]});
 }
-async function deleteNote(id) {
-    let note = await Note.findByPk(id);
-    return await note.destroy();
+async function deleteNote(noteId) {
+  try {
+    const note = await NoteModel.findByPk(noteId);
+    if (!note) {
+      console.error('Note not found with id:', noteId);
+    } else {
+      await note.destroy();
+    }
+  } catch (error) {
+    console.error('Error during deleting the note:', error);
+    throw error;
+  }
 }
+
 async function createNote(note) {
     return await Note.create(note);
 }

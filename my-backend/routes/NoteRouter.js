@@ -35,4 +35,5 @@ noteRouter.route('/note/noteFilter/:id').get( async (req, res) => {
 noteRouter.route('/note/noteUser/:id').get( async (req, res) => {
     return res.json(await getNotesByUserId(req.params.id));
 })
+
 export default noteRouter;
