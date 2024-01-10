@@ -11,6 +11,12 @@ async function getNotes() {
 async function getNoteById(id) {
     return await Note.findByPk(id,{include: ["Tags"]});
 }
+
+// async function deleteNote(id) {
+//   let note = await Note.findByPk(id);
+//   return await note.destroy();
+// }
+
 async function deleteNote(noteId) {
   try {
     const note = await Note.findByPk(noteId);
@@ -19,7 +25,7 @@ async function deleteNote(noteId) {
     } else {
       await note.destroy();
     }
-  } catch (error) {
+  } catch (error) { 
     console.error('Error during deleting the note:', error);
     throw error;
   }

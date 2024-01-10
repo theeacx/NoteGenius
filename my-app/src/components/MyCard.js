@@ -5,9 +5,10 @@ import '../components-style/MyCard.css';
 import axios from 'axios';
 
 function MyCard(props) {
-  const { title, content, userid, subjectid, groupid, onClick, tags, onDelete } = props;
+  const { title, content, userid, subjectid, groupid, onClick, tags } = props;
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
+
 
 
   const getSubjectById = async (id) => {
@@ -34,15 +35,15 @@ function MyCard(props) {
   }
 
   //when i press the delete button i want to delete the note from the database
-  const deleteNote = async (id) => {
-    try {
-      const response = await axios.delete(`http://localhost:9000/api/note/${id}`);
-      console.log('Note deleted:', response.data);
-    } catch (error) {
-      console.error('Error during deleting the note:', error);
-      throw error;
-    }
-  }
+  // const deleteNote = async (id) => {
+  //   try {
+  //     const response = await axios.delete(`http://localhost:9000/api/note/${id}`);
+  //     console.log('Note deleted:', response.data);
+  //   } catch (error) {
+  //     console.error('Error during deleting the note:', error);
+  //     throw error;
+  //   }
+  // }
   
   //create a new note based on the data from the form
   // const createNote = async (note) => {
@@ -82,7 +83,7 @@ function MyCard(props) {
     return tagColors[tagName] || 'transparent';
   };
 
-  return (
+  return ( 
     <Card onClick={onClick}>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
