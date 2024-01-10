@@ -29,6 +29,12 @@ function MyMenu() {
         </select>
         <AddGroup />
       </ul>
+      <select className="form-select" aria-label="Default select example" defaultValue="See Groups">
+          <option value="SeeGroups">See Groups</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
     </div>
   );
 }
