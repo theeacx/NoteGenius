@@ -3,22 +3,13 @@ import MyCard from "./MyCard";
 import MyMenu from "./MyMenu";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from 'axios';
+import "../components-style/MainPage.css";
 
 function MainPage({ userId }) {
   const [personalNotes, setPersonalNotes] = useState([]);
 
   const [group, setGroupId] = useState(null);
 
-  // const getGroupByNoteId = async (id) => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:9000/api/note/${id}`);
-  //     console.log('Group ID:', response.data);
-  //     setGroupId(response.data.GroupID);
-  //   } catch (error) {
-  //     console.error('Error during displaying the personal notes:', error);
-  //     throw error;
-  //   }
-  // };
 
   const getNotesByUserId = async (id) => {
     try {
@@ -35,9 +26,6 @@ function MainPage({ userId }) {
     if (userId) {
       getNotesByUserId(userId);
     }
-    // if(group) {
-    //   getGroupByNoteId(group.GroupID);
-    // }
   }, [userId]);
 
   return (
@@ -48,9 +36,13 @@ function MainPage({ userId }) {
           <Col md={12} className="search-bar">
             <input type="text" placeholder="search by title" />
           </Col>
+          {/*Add card button */}
+          <Col md={12} className="add-card-button">
+            <button>Add New Note</button>
+          </Col>
         </Row>
         <Row>
-          {/* Left Column - List of Cards */}
+          {/*List of Cards */}
           <Col md={8} className="card-list">
             <Row>
               {personalNotes.map((note) => (
@@ -68,7 +60,7 @@ function MainPage({ userId }) {
             </Row>
           </Col>
 
-          {/* Right Column - Menu */}
+          {/* Menu */}
           <Col md={4} className="menu-column">
             <MyMenu />
           </Col>

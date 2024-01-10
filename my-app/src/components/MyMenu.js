@@ -7,7 +7,7 @@ function MyMenu() {
       <h3 className="menu-title">Menu</h3>
       <input type="text" placeholder="Search.." name="search" className="menu-search" />
       <ul className="menu-options">
-        <li className="menu-option">Home</li>
+      <li className="menu-option home-button">Home</li>
         <select className="form-select" aria-label="Default select example" defaultValue="Subjects">
           <option value="Subjects">Subjects</option>
           <option value="1">One</option>
