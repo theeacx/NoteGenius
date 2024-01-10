@@ -15,11 +15,10 @@ function MainPage({ userId }) {
     try {
       const response = await axios.delete(`http://localhost:9000/api/note/${noteID}`);
       console.log('Note deleted:', response.data);
-      
       //delete the note from the list of notes
       const newNotes = personalNotes.filter((note) => note.NoteID !== noteID);
       setPersonalNotes(newNotes);
-
+      
 
     } catch (error) {
       console.error('Error during deleting the note:', error);
