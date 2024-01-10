@@ -1,13 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import MyTag from './MyTag';
 import '../components-style/MyCard.css';
 import axios from 'axios';
 
 function MyCard(props) {
-  const { noteTitle, content, user, subject, group, onClick, tags } = props;
+  const { noteTitle, content, userid, subjectid, groupid, onClick, tags } = props;
+  const [user, setUser] = useState(null);
+  const [subject, setSubject] = useState(null);
 
-  
+  const getSubjectById = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/subject/${id}`);
+      console.log('Subject:', response.data);
+      setSubject(response.data); 
+    } catch (error) {
+      console.error('Error during displaying the personal notes:', error);
+      throw error;
+    }
+  }
+
+  const getUserById = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/user/${id}`);
+      // console.log('User:', response.data);
+      setUser(response.data); 
+    } catch (error) {
+      console.error('Error during displaying the personal notes:', error);
+      throw error;
+    }
+  }
+
+  useEffect(() => {
+    if (userid) {
+      getUserById(userid);
+    }
+
+    if (subjectid) {
+      getSubjectById(subjectid);
+    }
+  }, [userid, subjectid]);
 
   const getTagColor = (tagName) => {
     const tagColors = {
@@ -25,15 +57,12 @@ function MyCard(props) {
     return tagColors[tagName] || 'transparent';
   };
 
- 
-
   return (
     <Card onClick={onClick}>
       <Card.Body>
-        <Card.Title >{noteTitle}</Card.Title>
-        <Card.Text >{user}</Card.Text>        
-        <Card.Text >{subject}</Card.Text>
-        <Card.Text >{user}</Card.Text>
+        <Card.Title>{noteTitle}</Card.Title>
+        {user && <Card.Text>{user.FirstName} {user.LastName}</Card.Text>}
+        {subject && <Card.Text>{subject.SubjectName}</Card.Text>}
         <div>
           {tags.map((tag, index) => (
             <MyTag key={index} text={tag} color={getTagColor(tag)} />
