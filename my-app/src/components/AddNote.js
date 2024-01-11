@@ -5,6 +5,7 @@ import axios from 'axios';
 function AddNote({ user, onNoteAdded, funcSubjectChange }) {
 
   const [isFormVisible, setFormVisible] = useState(false);
+  const [tags, setTags] = useState([]);
   const [noteData, setNoteData] = useState({
     Title: '',
     Content: '',
@@ -14,28 +15,6 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
 
   const [subjects, setSubjects] = useState([]);
 
-  const addNewNote = async () => {
-    try {
-      const response = await axios.post('http://localhost:9000/api/note', noteData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      console.log("Note created successfully:", response.data);
-
-      // Update the local state
-      setNoteData({
-        Title: '',
-        Content: '',
-        SubjectID: '',
-        UserID: user,
-      });
-
-      // Trigger the callback after the state has been updated
-      onNoteAdded(response.data.obj);
-    } catch (error) {
-      console.error("Error creating note:", error);
-    }
-  };
-
 
   useEffect(() => {
     axios.get('http://localhost:9000/api/subjects')
@@ -44,6 +23,14 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       })
       .catch((error) => {
         console.error('Error fetching subjects:', error);
+      });
+
+      axios.get('http://localhost:9000/api/tags')
+      .then((response) => {
+        setTags(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching tags:', error);
       });
   }, [funcSubjectChange]);
 
@@ -125,9 +112,11 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
           name="TagID"
         >
           <option value="">Select Tag</option>
-          <option value="1">Tag 1</option>
-          <option value="2">Tag 2</option>
-          <option value="3">Tag 3</option>
+          {tags.map((tag) => (
+            <option key={tag.TagID} value={tag.TagID}>
+              {tag.TagName}
+            </option>
+          ))}
         </select>
 
           <label htmlFor="noteTitle">Note Title:</label>
