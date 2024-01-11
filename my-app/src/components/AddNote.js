@@ -5,6 +5,7 @@ import axios from 'axios';
 function AddNote({ user, onNoteAdded, funcSubjectChange }) {
 
   const [isFormVisible, setFormVisible] = useState(false);
+  const [tags, setTags] = useState([]);
   const [noteData, setNoteData] = useState({
     Title: '',
     Content: '',
@@ -13,29 +14,6 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
   });
 
   const [subjects, setSubjects] = useState([]);
-  const[tag, setTag] = useState([]);
-
-  const addNewNote = async () => {
-    try {
-      const response = await axios.post('http://localhost:9000/api/note', noteData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      console.log("Note created successfully:", response.data);
-
-      // Update the local state
-      setNoteData({
-        Title: '',
-        Content: '',
-        SubjectID: '',
-        UserID: user,
-      });
-
-      // Trigger the callback after the state has been updated
-      onNoteAdded(response.data.obj);
-    } catch (error) {
-      console.error("Error creating note:", error);
-    }
-  };
 
 
   useEffect(() => {
@@ -46,9 +24,10 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       .catch((error) => {
         console.error('Error fetching subjects:', error);
       });
-    axios.get('http://localhost:9000/api/tags')
+
+      axios.get('http://localhost:9000/api/tags')
       .then((response) => {
-        setTag(response.data);
+        setTags(response.data);
       })
       .catch((error) => {
         console.error('Error fetching tags:', error);
@@ -141,12 +120,11 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
           name="TagID"
         >
           <option value="">Select Tag</option>
-          {tag.map((tag) => (
+          {tags.map((tag) => (
             <option key={tag.TagID} value={tag.TagID}>
               {tag.TagName}
             </option>
           ))}
-          
         </select>
 
           <label htmlFor="noteTitle">Note Title:</label>
