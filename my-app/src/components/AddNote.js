@@ -46,6 +46,10 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
     });
   };
 
+  const handleTagChange = (e) => {
+    //to be added
+  };
+
   const handleSubjectChange = (e) => {
     setNoteData({
       ...noteData,
@@ -108,7 +112,8 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
           id="tagSelect"
           className="form-select"
           aria-label="Default select example"
-          value=""
+          value={noteData.TagID}
+          onChange={handleTagChange}
           name="TagID"
         >
           <option value="">Select Tag</option>
