@@ -21,18 +21,19 @@ function NotePage({ note, onClose }) {
     }, [note]);
 
     return (
-      <div className="note-page-container">
+        <div className="note-page-container">
         <div className="note-page-cards">
           <h1>{noteData.Title}</h1>
-          <h2> {noteData.SubjectID}</h2> 
-          {/* this needs to be the subject name */}
+          <h2>{noteData.SubjectID}</h2> {/* Replace with subject name when available */}
+          <div className="note-page-content">
             <p>{noteData.Content}</p>
+          </div>
         </div>
-  
         <div className="note-page-back-button">
           <button onClick={onClose}>Back</button>
         </div>
       </div>
+      
     );
   }
   
