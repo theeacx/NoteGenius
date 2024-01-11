@@ -23,9 +23,9 @@ function NotePage({ note, onClose }) {
     return (
       <div className="note-page-container">
         <div className="note-page-cards">
-          {/* Display note details or any other content */}
           <h1>{noteData.Title}</h1>
-          <h2> {noteData.Subject}</h2>
+          <h2> {noteData.SubjectID}</h2> 
+          {/* this needs to be the subject name */}
             <p>{noteData.Content}</p>
         </div>
   
