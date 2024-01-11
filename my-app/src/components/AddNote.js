@@ -34,9 +34,6 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       });
   }, [funcSubjectChange]);
 
-  // useEffect(() => {
-   
-  // });
 
 
   const toggleFormVisibility = () => {
