@@ -11,7 +11,19 @@ function MainPage({ userId }) {
   const [personalNotes, setPersonalNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null); // Track the selected note
 
+  const [subjectData, setSubjectData] = useState(null);
+
   const [group, setGroupId] = useState(null);
+
+  const updateSubjects = () => {
+    axios.get('http://localhost:9000/api/subjects')
+      .then((response) => {
+        setSubjectData(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching subjects:', error);
+      });
+  };
 
   const handleDelete = async (noteID) => {
     try {
@@ -57,8 +69,14 @@ function MainPage({ userId }) {
     }
   }, [userId]);
 
-  // Debugging line to check the value of userId
   console.log("MainPage userId:", userId);
+
+  const handleSubjectChange = (e) => {
+    setSubjectData({
+      ...subjectData,
+      SubjectID: e.target.value, 
+    });
+  }
 
   return (
     <React.Fragment>
@@ -74,7 +92,7 @@ function MainPage({ userId }) {
             </Col>
             {/* Add card button */}
             <Col md={12} className="add-card-button">
-              <AddNote user={userId} onNoteAdded={addNewNote} />
+              <AddNote user={userId} onNoteAdded={addNewNote} funcSubjectChange={handleSubjectChange} />
             </Col>
             {/* List of Cards */}
             <Col md={8} className="card-list">
@@ -96,7 +114,7 @@ function MainPage({ userId }) {
             </Col>
             {/* Menu */}
             <Col md={4} className="menu-column">
-              <MyMenu user={userId} />
+            <MyMenu userID={userId} updateSubjects={updateSubjects} />
             </Col>
           </Row>
         )}

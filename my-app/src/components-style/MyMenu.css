@@ -5,10 +5,23 @@
   padding: 15px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
   height: 100%;
-  max-height: 530px; /* Adjust this value as needed */
-  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-y: auto; 
+  scrollbar-width: thin;  
+  scrollbar-color: #6b73bd #282c34;  
 }
 
+.menu-container::-webkit-scrollbar {
+  width: 10px;  
+}
+
+.menu-container::-webkit-scrollbar-thumb {
+  background-color: #6b73bd;  
+  border-radius: 5px;  
+}
+
+.menu-container::-webkit-scrollbar-track {
+  background-color: #282c34;  
+}
   
   .menu-title {
     font-size: 1.5rem;

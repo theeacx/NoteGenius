@@ -1,10 +1,10 @@
-//AddSubject.js
+// AddSubject.js
 
 import React, { useState, useEffect } from 'react'; 
 import '../components-style/AddSubject.css';
 import axios from 'axios';
 
-function AddSubject({ user, onSubjectAdded }) {
+function AddSubject({ user, onSubjectAdded, updateSubjects }) {
   const [isFormVisible, setFormVisible] = useState(false);
   const [subjectData, setSubjectData] = useState({
     SubjectName: '',
@@ -33,8 +33,12 @@ function AddSubject({ user, onSubjectAdded }) {
     })
     .then((response) => {
       console.log("Subject created successfully:", response.data);
-      if (typeof onSubjectAdded === 'function') { // Check if onSubjectAdded is a function
-        onSubjectAdded(response.data.obj); // Assuming response.data.obj contains the new subject
+      if (typeof onSubjectAdded === 'function') {
+        onSubjectAdded(response.data.obj);
+      }
+      // If the updateSubjects function is provided, call it to update the subjects
+      if (typeof updateSubjects === 'function') {
+        updateSubjects();
       }
     })
     .catch((error) => {
@@ -67,4 +71,3 @@ AddSubject.defaultProps = {
 };
 
 export default AddSubject;
-

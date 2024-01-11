@@ -1,10 +1,8 @@
-// AddNote.js
-
 import React, { useState, useEffect } from 'react';
 import '../components-style/AddNote.css';
 import axios from 'axios';
 
-function AddNote({ user, onNoteAdded }) {
+function AddNote({ user, onNoteAdded, funcSubjectChange }) {
 
   const [isFormVisible, setFormVisible] = useState(false);
   const [noteData, setNoteData] = useState({
@@ -14,6 +12,17 @@ function AddNote({ user, onNoteAdded }) {
     UserID: '',   // Assuming you want to send the user ID to the backend
   });
 
+  const [subjects, setSubjects] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:9000/api/subjects')
+      .then((response) => {
+        setSubjects(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching subjects:', error);
+      });
+  }, [funcSubjectChange]); // Include funcSubjectChange in the dependency array
 
   const toggleFormVisibility = () => {
     setFormVisible(!isFormVisible);
@@ -55,7 +64,6 @@ function AddNote({ user, onNoteAdded }) {
     .catch((error) => {
       console.error("Error creating note:", error);
     });
-
   };
 
   return (
@@ -63,17 +71,22 @@ function AddNote({ user, onNoteAdded }) {
       <button onClick={toggleFormVisibility}>Add Note</button>
       {isFormVisible && (
         <div className="note-form">
-          <select 
-            className="form-select" 
-            aria-label="Default select example" 
-            value={noteData.SubjectID} // Controlled component with value prop
+           <label htmlFor="subjectSelect">Select Subject:</label>
+          <select
+            id="subjectSelect"
+            className="form-select"
+            aria-label="Default select example"
+            value={noteData.SubjectID}
             onChange={handleSubjectChange}
             name="SubjectID"
           >
-            <option value="">Select Subject</option>  // Use empty string for unselected state
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <option value="">Select Subject</option>
+           
+            {subjects.map((subject) => (
+              <option key={subject.SubjectID} value={subject.SubjectID}>
+                {subject.SubjectName}
+              </option>
+            ))}
           </select>
 
           <label htmlFor="noteTitle">Note Title:</label>
@@ -103,5 +116,3 @@ function AddNote({ user, onNoteAdded }) {
 }
 
 export default AddNote;
-
-

@@ -3,12 +3,11 @@ import AddGroup from './AddGroup';
 import '../components-style/MyMenu.css';
 import AddSubject from './AddSubject';
 
-function MyMenu({ userId }) {
+function MyMenu({ userID, updateSubjects }) {
 
   useEffect(() => {
-    console.log('User ID in MyMenu:', userId);
-  }, [userId]);
-
+    console.log('User ID in MyMenu:', userID);
+  }, [userID]);
 
 
   return (
@@ -23,7 +22,7 @@ function MyMenu({ userId }) {
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>
-        <AddSubject user={userId}/>
+        <AddSubject user={userID} updateSubjects={updateSubjects} />
         <select className="form-select" aria-label="Default select example" defaultValue="Tags">
           <option value="Tags">Tags</option>
           <option value="1">One</option>
