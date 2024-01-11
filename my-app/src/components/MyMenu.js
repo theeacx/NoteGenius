@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AddGroup from './AddGroup';
 import '../components-style/MyMenu.css';
+import AddSubject from './AddSubject';
 
-function MyMenu() {
+function MyMenu({ userId }) {
+
+  useEffect(() => {
+    console.log('User ID in MyMenu:', userId);
+  }, [userId]);
+
+
+
   return (
     <div className="menu-container">
       <h3 className="menu-title">Menu</h3>
@@ -15,6 +23,7 @@ function MyMenu() {
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>
+        <AddSubject user={userId}/>
         <select className="form-select" aria-label="Default select example" defaultValue="Tags">
           <option value="Tags">Tags</option>
           <option value="1">One</option>

@@ -30,15 +30,6 @@ async function deleteNote(noteId) {
     throw error;
   }
 }
-// async function createNote(note) {
-//   try {
-//     let createdNote = await Note.create(note, { include: ["Tags"] });
-//     return { error: false, msg: "Note created successfully", obj: createdNote };
-//   } catch (error) {
-//     console.error('Error during note creation:', error);
-//     return { error: true, msg: "Error creating note", details: error.message };
-//   }
-// }
 async function createNote (note) {
   try {
     // Check if the SubjectID exists in the subject table

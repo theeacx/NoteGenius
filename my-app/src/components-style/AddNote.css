@@ -4,7 +4,7 @@
   transition: height 0.3s ease-in-out;
   border: 1px solid #333;
   padding: 15px;
-  max-width: 400px; /* Set a maximum width */
+  max-width: 800px; /* Set a maximum width */
   margin-left: 20px; /* Add some margin to the left */
 }
 
@@ -44,12 +44,19 @@
   height: 35px; /* Smaller height for dropdown */
 }
 
-.add-note-container input,
+.add-note-container input{
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 5px;
+  height: 35px;
+}
 .add-note-container textarea {
   background-color: #333;
   color: #fff;
   border: 1px solid #555;
   border-radius: 5px;
+  height: 250px;
 }
 
 .add-note-container button {

@@ -12,9 +12,16 @@ async function getSubjectById(id) {
 }
 
 // Function to create a new subject
-async function createSubject(subject) {
-    return await Subject.create(subject);
-}
+async function createSubject (subject) {
+    try {
+      let createdSubject = await Subject.create(subject);
+      return { error: false, msg: "Subject created successfully", obj: createdSubject };
+    } catch (error) {
+      // Handle and log the error
+      console.error('Error during subject creation:', error);
+      return { error: true, msg: "Error creating subject" };
+    }
+  }
 
 // Function to delete a subject by ID
 async function deleteSubject(id) {

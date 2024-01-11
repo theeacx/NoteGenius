@@ -1,0 +1,61 @@
+.add-subject-container {
+    text-align: center;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #282c34; 
+    border: 1px solid #22252b;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+
+  }
+  
+  .add-subject-container.open {
+    height: auto; /* Adjust as needed */
+  }
+  
+  .add-subject-container button,
+  .add-subject-container input {
+    width: 90%; /* Adjust width as needed */
+    margin: 10px auto; /* Center and space out elements */
+    padding: 10px;
+    box-sizing: border-box; /* Include padding in width */
+  }
+  
+  .subject-form {
+    text-align: left;
+    padding: 10px;
+  }
+  
+  .add-subject-container label,
+  .add-subject-container button {
+    color: #fff;
+    display: block; /* Make label and button occupy their own line */
+    margin-bottom: 10px;
+  }
+  
+  .add-subject-container input {
+    padding: 8px; 
+    background-color: #282c34; 
+    border: 1px solid #22252b;
+    border-radius: 8px;
+    color: white; 
+  }
+  
+  .add-subject-container button {
+    background-color: #4e5488; 
+    color: white; 
+    padding: 10px;
+    border: none; 
+    border-radius: 5px; 
+    transition: background-color 0.3s ease-in-out; 
+    cursor: pointer; 
+  }
+  
+  .add-subject-container button:hover {
+    background-color: #525874; 
+  }
+  
+  

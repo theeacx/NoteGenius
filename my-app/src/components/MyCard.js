@@ -34,28 +34,12 @@ function MyCard(props) {
     }
   }
 
-  //when i press the delete button i want to delete the note from the database
-  // const deleteNote = async (id) => {
-  //   try {
-  //     const response = await axios.delete(`http://localhost:9000/api/note/${id}`);
-  //     console.log('Note deleted:', response.data);
-  //   } catch (error) {
-  //     console.error('Error during deleting the note:', error);
-  //     throw error;
-  //   }
-  // }
-  
-  //create a new note based on the data from the form
-  // const createNote = async (note) => {
-  //   try {
-  //     const response = await axios.post('http://localhost:9000/api/note/', note, {
-  //       headers: {'Content-Type': 'application/json'},
-  //     })
-  //     console.log("Note created successfully:", response.data);
-  //   } catch (error) {
-  //     console.error("Error creating note:", error);
-  //   }
-  // }
+//function that when i click on the card to go on note page
+const handleNoteClick = (noteID) => {
+  if (typeof onClick === 'function') {
+    onClick(noteID);
+  }
+}
 
   useEffect(() => {
     if (userid) {
@@ -84,7 +68,7 @@ function MyCard(props) {
   };
 
   return ( 
-    <Card onClick={onClick}>
+    <Card onClick={handleNoteClick}>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         {user && <Card.Text>{user.FirstName} {user.LastName}</Card.Text>}

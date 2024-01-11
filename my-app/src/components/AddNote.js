@@ -5,7 +5,7 @@ import '../components-style/AddNote.css';
 import axios from 'axios';
 
 function AddNote({ user, onNoteAdded }) {
-  //NU STIU DACA E BINE SA PUN AICI onNoteAdded
+
   const [isFormVisible, setFormVisible] = useState(false);
   const [noteData, setNoteData] = useState({
     Title: '',
@@ -43,10 +43,6 @@ function AddNote({ user, onNoteAdded }) {
 
   const handleSaveNote = () => {
     console.log('Note Data:', noteData);
-    // if (!noteData.Title || !noteData.Content || !noteData.SubjectID || !noteData.UserID) {
-    //   console.error("All fields are required.");
-    //   return;
-    // }
     axios.post('http://localhost:9000/api/note', noteData, {
       headers: {'Content-Type': 'application/json'},
     })
@@ -60,23 +56,6 @@ function AddNote({ user, onNoteAdded }) {
       console.error("Error creating note:", error);
     });
 
-    // axios.post('http://localhost:9000/api/note', noteData, {
-    //   headers: {'Content-Type': 'application/json'},
-    // })
-    // .then((response) => {
-    //   console.log("Note created successfully:", response.data);
-    //   // Reset the form and hide it after successful save
-    //   setNoteData({
-    //     Title: '',
-    //     Content: '',
-    //     SubjectID: '',
-    //     UserID: user,
-    //   });
-    //   setFormVisible(false);
-    // })
-    // .catch((error) => {
-    //   console.error("Error creating note:", error);
-    // });
   };
 
   return (
