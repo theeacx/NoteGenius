@@ -13,6 +13,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
   });
 
   const [subjects, setSubjects] = useState([]);
+  const[tag, setTag] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:9000/api/subjects')
@@ -22,11 +23,24 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       .catch((error) => {
         console.error('Error fetching subjects:', error);
       });
+    axios.get('http://localhost:9000/api/tags')
+      .then((response) => {
+        setTag(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching tags:', error);
+      });
   }, [funcSubjectChange]);
+
+  // useEffect(() => {
+   
+  // });
+
 
   const toggleFormVisibility = () => {
     setFormVisible(!isFormVisible);
   };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,6 +63,8 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       UserID: user 
     }));
   }, [user]); 
+
+
 
   const handleSaveNote = () => {
     console.log('Note Data:', noteData);
@@ -102,9 +118,12 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
           name="TagID"
         >
           <option value="">Select Tag</option>
-          <option value="1">Tag 1</option>
-          <option value="2">Tag 2</option>
-          <option value="3">Tag 3</option>
+          {tag.map((tag) => (
+            <option key={tag.TagID} value={tag.TagID}>
+              {tag.TagName}
+            </option>
+          ))}
+          
         </select>
 
           <label htmlFor="noteTitle">Note Title:</label>
