@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import MyTag from './MyTag';
 import '../components-style/MyCard.css';
 import axios from 'axios';
+import NotePage from './NotePage';
 
 function MyCard(props) {
   const { title, content, userid, subjectid, groupid, onClick, onDelete, tags } = props;
@@ -39,6 +40,7 @@ const handleNoteClick = (noteID) => {
   if (typeof onClick === 'function') {
     onClick(noteID);
   }
+
 }
 
   useEffect(() => {

@@ -4,15 +4,36 @@ import React, { useState, useEffect } from 'react';
 import '../components-style/NotePage.css';
 import MyCard from './MyCard';
 import axios from 'axios';
+import MainPage from './MainPage';
 
-function NotePage({ user }) {
+function NotePage({ note, onClose }) {
+    const [noteData, setNoteData] = useState({
+        title: '',
+        content: '',
+        subject: '',
+    });
+
+    useEffect(() => {
+        if (note) {
+            console.log("Note:", note);
+            setNoteData(note);
+        }
+    }, [note]);
 
     return (
-        <div className="note-page-container">
-            <h1 className="note-page-title">Note Page</h1>
-            <div className="note-page-cards">
-                <MyCard />
-            </div>
+      <div className="note-page-container">
+        <div className="note-page-cards">
+          {/* Display note details or any other content */}
+          <h1>{noteData.Title}</h1>
+          <h2> {noteData.Subject}</h2>
+            <p>{noteData.Content}</p>
         </div>
+  
+        <div className="note-page-back-button">
+          <button onClick={onClose}>Back</button>
+        </div>
+      </div>
     );
-}
+  }
+  
+  export default NotePage;
