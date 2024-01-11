@@ -24,11 +24,6 @@ function MainPage({ userId }) {
     setFilteredNotes(filtered);
   };
 
-  // const handleSubjectChange = (subjectID) => {
-  //   const newFilteredNotes = personalNotes.filter((note) => note.SubjectID === subjectID);
-  //   setFilteredNotes(newFilteredNotes);
-  // };
-
   const handleSubjectSelect = (subjectID) => {
     const filteredBySubject = personalNotes.filter((note) => note.SubjectID === subjectID);
     const filteredBySearch = filteredBySubject.filter((note) =>
@@ -36,7 +31,6 @@ function MainPage({ userId }) {
     );
     setFilteredNotes(filteredBySearch);
   };
-
 
   const updateSubjects = () => {
     axios.get('http://localhost:9000/api/subjects')
@@ -47,8 +41,6 @@ function MainPage({ userId }) {
         console.error('Error fetching subjects:', error);
       });
   };
-
-  
 
   const handleDelete = async (noteID) => {
     try {
@@ -92,7 +84,10 @@ function MainPage({ userId }) {
     }
   }, [userId]);
 
-  console.log("MainPage userId:", userId);
+  // Watch for changes in personalNotes and update filteredNotes accordingly
+  useEffect(() => {
+    setFilteredNotes(personalNotes);
+  }, [personalNotes]);
 
   return (
     <React.Fragment>
@@ -123,14 +118,14 @@ function MainPage({ userId }) {
                     subjectid={note.SubjectID}
                     groupid={1} // note.GroupID
                     tags={['Tag1', 'Tag2', 'Tag3']}
-                    onClick={() => handleCardClick(note)}
+                    onDoubleClick={() => handleCardClick(note)}
                     onDelete={() => handleDelete(note.NoteID)}
                   />
                 ))}
               </Row>
             </Col>
             <Col md={4} className="menu-column">
-            <MyMenu userID={userId} updateSubjects={updateSubjects} onSubjectSelect={handleSubjectSelect} />
+              <MyMenu userID={userId} updateSubjects={updateSubjects} onSubjectSelect={handleSubjectSelect} />
             </Col>
           </Row>
         )}
@@ -138,6 +133,5 @@ function MainPage({ userId }) {
     </React.Fragment>
   );
 }
-
 
 export default MainPage;

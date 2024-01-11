@@ -15,6 +15,29 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
   const [subjects, setSubjects] = useState([]);
   const[tag, setTag] = useState([]);
 
+  const addNewNote = async () => {
+    try {
+      const response = await axios.post('http://localhost:9000/api/note', noteData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log("Note created successfully:", response.data);
+
+      // Update the local state
+      setNoteData({
+        Title: '',
+        Content: '',
+        SubjectID: '',
+        UserID: user,
+      });
+
+      // Trigger the callback after the state has been updated
+      onNoteAdded(response.data.obj);
+    } catch (error) {
+      console.error("Error creating note:", error);
+    }
+  };
+
+
   useEffect(() => {
     axios.get('http://localhost:9000/api/subjects')
       .then((response) => {

@@ -4,54 +4,53 @@ import MyTag from './MyTag';
 import '../components-style/MyCard.css';
 import axios from 'axios';
 
-
 function MyCard(props) {
-  const { title, content, userid, subjectid, groupid, onClick, onDelete, tags } = props;
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
-
-
 
   const getSubjectById = async (id) => {
     try {
       const response = await axios.get(`http://localhost:9000/api/subject/${id}`);
       console.log('Subject:', response.data);
-      setSubject(response.data); 
+      setSubject(response.data);
     } catch (error) {
       console.error('Error during displaying the personal notes:', error);
       throw error;
     }
-  }
+  };
 
   const getUserById = async (id) => {
     try {
       const response = await axios.get(`http://localhost:9000/api/user/${id}`);
-      // console.log('User:', response.data);
-      setUser(response.data); 
+      setUser(response.data);
     } catch (error) {
       console.error('Error during displaying the personal notes:', error);
       throw error;
-
     }
-  }
+  };
 
-//function that when i click on the card to go on note page
-const handleNoteClick = (noteID) => {
-  if (typeof onClick === 'function') {
-    onClick(noteID);
-  }
+  const handleViewClick = () => {
+    if (typeof props.onDoubleClick === 'function') {
+      props.onDoubleClick(props.noteID);
+    }
+  };
 
-}
+  const handleDeleteClick = (event) => {
+    event.stopPropagation();
+    if (typeof props.onDelete === 'function') {
+      props.onDelete();
+    }
+  };
 
   useEffect(() => {
-    if (userid) {
-      getUserById(userid);
+    if (props.userid) {
+      getUserById(props.userid);
     }
 
-    if (subjectid) {
-      getSubjectById(subjectid);
+    if (props.subjectid) {
+      getSubjectById(props.subjectid);
     }
-  }, [userid, subjectid]);
+  }, [props.userid, props.subjectid]);
 
   const getTagColor = (tagName) => {
     const tagColors = {
@@ -69,19 +68,25 @@ const handleNoteClick = (noteID) => {
     return tagColors[tagName] || 'transparent';
   };
 
-  return ( 
-    <Card onClick={handleNoteClick}>
+  return (
+    <Card>
       <Card.Body>
-        <Card.Title>{title}</Card.Title>
+        <Card.Title>{props.title}</Card.Title>
         {user && <Card.Text>{user.FirstName} {user.LastName}</Card.Text>}
         {subject && <Card.Text>{subject.SubjectName}</Card.Text>}
 
         <div>
-          {tags.map((tag, index) => (
+          {props.tags.map((tag, index) => (
             <MyTag key={index} text={tag} color={getTagColor(tag)} />
           ))}
         </div>
-        <button id="deleteButton" onClick={onDelete}>Delete</button>
+
+        <button id="viewButton" onClick={handleViewClick}>
+          View
+        </button>
+        <button id="deleteButton" onClick={handleDeleteClick}>
+          Delete
+        </button>
       </Card.Body>
     </Card>
   );
