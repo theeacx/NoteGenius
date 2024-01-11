@@ -34,9 +34,12 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       });
   }, [funcSubjectChange]);
 
+
+
   const toggleFormVisibility = () => {
     setFormVisible(!isFormVisible);
   };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +66,8 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       UserID: user 
     }));
   }, [user]); 
+
+
 
   const handleSaveNote = () => {
     console.log('Note Data:', noteData);
