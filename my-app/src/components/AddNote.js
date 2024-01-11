@@ -8,8 +8,8 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
   const [noteData, setNoteData] = useState({
     Title: '',
     Content: '',
-    SubjectID: '',  // Assuming the backend expects 'SubjectID'
-    UserID: '',   // Assuming you want to send the user ID to the backend
+    SubjectID: '',  
+    UserID: '',   
   });
 
   const [subjects, setSubjects] = useState([]);
@@ -22,7 +22,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       .catch((error) => {
         console.error('Error fetching subjects:', error);
       });
-  }, [funcSubjectChange]); // Include funcSubjectChange in the dependency array
+  }, [funcSubjectChange]);
 
   const toggleFormVisibility = () => {
     setFormVisible(!isFormVisible);
@@ -39,14 +39,14 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
   const handleSubjectChange = (e) => {
     setNoteData({
       ...noteData,
-      SubjectID: e.target.value,  // Changed to 'SubjectID' to match the state
+      SubjectID: e.target.value,  
     });
   };
 
   useEffect(() => {
     setNoteData((prevNoteData) => ({
       ...prevNoteData,
-      UserID: user // Update UserID with the new user prop
+      UserID: user 
     }));
   }, [user]); 
 
@@ -57,9 +57,13 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
     })
     .then((response) => {
       console.log("Note created successfully:", response.data);
-      // Call the onNoteAdded callback with the new note
-      onNoteAdded(response.data.obj); // Assuming response.data.obj contains the new note
-      // ... rest of your code ...
+      onNoteAdded(response.data.obj); 
+      setNoteData({
+        Title: '',
+        Content: '',
+        SubjectID: '',
+        UserID: '',
+      });
     })
     .catch((error) => {
       console.error("Error creating note:", error);
@@ -89,11 +93,25 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
             ))}
           </select>
 
+          <label htmlFor="tagSelect">Select Tag:</label>
+          <select
+          id="tagSelect"
+          className="form-select"
+          aria-label="Default select example"
+          value=""
+          name="TagID"
+        >
+          <option value="">Select Tag</option>
+          <option value="1">Tag 1</option>
+          <option value="2">Tag 2</option>
+          <option value="3">Tag 3</option>
+        </select>
+
           <label htmlFor="noteTitle">Note Title:</label>
           <input
             type="text"
             id="noteTitle"
-            name="Title"  // Name attribute matches the state key
+            name="Title"  
             value={noteData.Title}
             onChange={handleInputChange}
             placeholder="Enter note title"
@@ -102,7 +120,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
           <label htmlFor="noteContent">Note Content:</label>
           <textarea
             id="noteContent"
-            name="Content"  // Name attribute matches the state key
+            name="Content"  
             value={noteData.Content}
             onChange={handleInputChange}
             placeholder="Enter note content"

@@ -9,11 +9,34 @@ import "../components-style/MainPage.css";
 
 function MainPage({ userId }) {
   const [personalNotes, setPersonalNotes] = useState([]);
-  const [selectedNote, setSelectedNote] = useState(null); // Track the selected note
-
+  const [selectedNote, setSelectedNote] = useState(null); 
   const [subjectData, setSubjectData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredNotes, setFilteredNotes] = useState([]);
 
-  const [group, setGroupId] = useState(null);
+  const handleSearchChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    const filtered = personalNotes.filter((note) =>
+      note.Title.toLowerCase().includes(query)
+    );
+    setFilteredNotes(filtered);
+  };
+
+  // const handleSubjectChange = (subjectID) => {
+  //   const newFilteredNotes = personalNotes.filter((note) => note.SubjectID === subjectID);
+  //   setFilteredNotes(newFilteredNotes);
+  // };
+
+  const handleSubjectSelect = (subjectID) => {
+    const filteredBySubject = personalNotes.filter((note) => note.SubjectID === subjectID);
+    const filteredBySearch = filteredBySubject.filter((note) =>
+      note.Title.toLowerCase().includes(searchQuery)
+    );
+    setFilteredNotes(filteredBySearch);
+  };
+
 
   const updateSubjects = () => {
     axios.get('http://localhost:9000/api/subjects')
@@ -25,15 +48,16 @@ function MainPage({ userId }) {
       });
   };
 
+  
+
   const handleDelete = async (noteID) => {
     try {
       const response = await axios.delete(`http://localhost:9000/api/note/${noteID}`);
       console.log('Note deleted:', response.data);
-      //delete the note from the list of notes
+
       const newNotes = personalNotes.filter((note) => note.NoteID !== noteID);
       setPersonalNotes(newNotes);
 
-      // Clear the selected note if it's deleted
       if (selectedNote && selectedNote.NoteID === noteID) {
         setSelectedNote(null);
       }
@@ -47,6 +71,7 @@ function MainPage({ userId }) {
       const response = await axios.get(`http://localhost:9000/api/note/noteUser/${id}`);
       console.log('Personal Notes:', response.data);
       setPersonalNotes(response.data);
+      setFilteredNotes(response.data);
     } catch (error) {
       console.error('Error during displaying the personal notes:', error);
       throw error;
@@ -54,12 +79,10 @@ function MainPage({ userId }) {
   };
 
   const addNewNote = (newNote) => {
-    // Add the new note to the personalNotes state
     setPersonalNotes([...personalNotes, newNote]);
   };
 
   const handleCardClick = (note) => {
-    // Set the selectedNote state to the clicked note
     setSelectedNote(note);
   };
 
@@ -71,33 +94,27 @@ function MainPage({ userId }) {
 
   console.log("MainPage userId:", userId);
 
-  const handleSubjectChange = (e) => {
-    setSubjectData({
-      ...subjectData,
-      SubjectID: e.target.value, 
-    });
-  }
-
   return (
     <React.Fragment>
       <Container fluid className="main-page-container">
-        {selectedNote ? ( // Render NotePage if a note is selected
+        {selectedNote ? (
           <NotePage note={selectedNote} onClose={() => setSelectedNote(null)} />
         ) : (
-          // Otherwise, render the list of cards
           <Row>
-            {/* Search Bar */}
             <Col md={12} className="search-bar">
-              <input type="text" placeholder="search by title" />
+              <input
+                type="text"
+                placeholder="Search by title"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
             </Col>
-            {/* Add card button */}
             <Col md={12} className="add-card-button">
-              <AddNote user={userId} onNoteAdded={addNewNote} funcSubjectChange={handleSubjectChange} />
+              <AddNote user={userId} onNoteAdded={addNewNote} funcSubjectChange={handleSubjectSelect} />
             </Col>
-            {/* List of Cards */}
             <Col md={8} className="card-list">
               <Row>
-                {personalNotes.map((note) => (
+                {filteredNotes.map((note) => (
                   <MyCard
                     key={note.NoteID}
                     title={note.Title}
@@ -112,9 +129,8 @@ function MainPage({ userId }) {
                 ))}
               </Row>
             </Col>
-            {/* Menu */}
             <Col md={4} className="menu-column">
-            <MyMenu userID={userId} updateSubjects={updateSubjects} />
+            <MyMenu userID={userId} updateSubjects={updateSubjects} onSubjectSelect={handleSubjectSelect} />
             </Col>
           </Row>
         )}
@@ -122,5 +138,6 @@ function MainPage({ userId }) {
     </React.Fragment>
   );
 }
+
 
 export default MainPage;

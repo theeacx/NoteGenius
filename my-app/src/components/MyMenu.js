@@ -2,12 +2,31 @@ import React, {useEffect} from 'react';
 import AddGroup from './AddGroup';
 import '../components-style/MyMenu.css';
 import AddSubject from './AddSubject';
+import { useState } from 'react';
+import axios from 'axios';
 
-function MyMenu({ userID, updateSubjects }) {
+function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
 
   useEffect(() => {
-    console.log('User ID in MyMenu:', userID);
-  }, [userID]);
+    fetchSubjects();
+  }, []);
+
+  const handleSubjectSelectLocal = (subjectID) => {
+    setSelectedSubject(subjectID);
+    onSubjectSelect(subjectID); 
+  };
+
+  const fetchSubjects = () => {
+    axios.get('http://localhost:9000/api/subjects')
+      .then((response) => {
+        setSubjects(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching subjects:', error);
+      });
+  };
 
 
   return (
@@ -16,12 +35,21 @@ function MyMenu({ userID, updateSubjects }) {
       <input type="text" placeholder="Search.." name="search" className="menu-search" />
       <ul className="menu-options">
       <li className="menu-option home-button">Home</li>
-        <select className="form-select" aria-label="Default select example" defaultValue="Subjects">
-          <option value="Subjects">Subjects</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
+      <label htmlFor="subjectSelect">Subjects</label>
+      <select
+        id="subjectSelect"
+        className="form-select"
+        aria-label="Default select example"
+        value={selectedSubject}
+        onChange={(e) => handleSubjectSelectLocal(e.target.value)} 
+      >
+        <option value="">Select Subject</option>
+        {subjects.map((subject) => (
+          <option key={subject.SubjectID} value={subject.SubjectID}>
+          {subject.SubjectName}
+        </option>
+        ))}
+      </select>
         <AddSubject user={userID} updateSubjects={updateSubjects} />
         <select className="form-select" aria-label="Default select example" defaultValue="Tags">
           <option value="Tags">Tags</option>
