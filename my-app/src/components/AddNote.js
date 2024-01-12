@@ -81,6 +81,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
         SubjectID: '',
         UserID: '',
       });
+      toggleFormVisibility();
     })
     .catch((error) => {
       console.error("Error creating note:", error);

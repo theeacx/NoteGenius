@@ -40,12 +40,19 @@ function AddSubject({ user, onSubjectAdded, updateSubjects }) {
       if (typeof updateSubjects === 'function') {
         updateSubjects();
       }
+      // This will hide the form after the subject is saved
+      toggleFormVisibility();
+      // Reset the subject data state if needed
+      setSubjectData({
+        SubjectName: '',
+        UserID: user 
+      });
     })
     .catch((error) => {
       console.error("Error creating subject:", error);
     });
   };
-
+  
   return (
     <div className={`add-subject-container ${isFormVisible ? 'open' : ''}`}>
       <button onClick={toggleFormVisibility}>Add Subject</button>
