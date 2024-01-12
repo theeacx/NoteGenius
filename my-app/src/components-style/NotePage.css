@@ -1,53 +1,75 @@
 .note-page-container {
-    text-align: center; /* Center align text */
-    max-width: 800px; /* Set a maximum width */
-    margin: 20px auto; /* Center the container with margin */
-    padding: 15px; /* Padding inside the container */
-    color: #fff; /* Text color */
-  }
-  
-  .note-page-cards {
-    margin-bottom: 20px; /* Space below the card section */
-  }
-  
-  .note-page-cards h1 {
-    margin-bottom: 10px; /* Space below the title */
-  }
-  
-  .note-page-cards h2 {
-    margin-bottom: 15px; /* Space below the subject */
-  }
-  
-  .note-page-content {
-    background-color: #333; /* Background color for content area */
-    color: #fff; /* Text color for content */
-    border: 1px solid #555; /* Border for content area */
-    border-radius: 5px; /* Rounded corners for content area */
-    height: 250px; /* Fixed height for content area */
-    overflow-y: auto; /* Enable vertical scrolling */
-    padding: 10px; /* Padding inside content area */
-    text-align: left; /* Align text to the left in content area */
-  }
-  
-  .note-page-back-button {
-    text-align: center; /* Center align the button */
-  }
-  
-  .note-page-back-button button {
-    background-color: #4e5488; /* Background color */
-    color: white; /* Text color */
-    border: none; /* No border */
-    border-radius: 20px; /* Rounded corners */
-    padding: 10px 20px; /* Padding inside the button */
-    margin-top: 10px; /* Space above the button */
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition for hover effects */
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px; /* Shadow effect */
-    cursor: pointer; /* Cursor changes to pointer to indicate it's clickable */
-  }
-  
-  .note-page-back-button button:hover {
-    background-color: #525874; /* Background color on hover */
-    transform: translateY(-2px); /* Slight move up effect on hover */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
-  }
-  
+  text-align: center;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px;
+  color: #fff;
+}
+
+.note-page-cards {
+  margin-bottom: 20px;
+}
+
+.note-page-cards h1 {
+  margin-bottom: 10px;
+}
+
+.note-page-cards h2 {
+  margin-bottom: 15px;
+}
+
+.note-page-content {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 5px;
+  min-height: 250px;
+  max-height: 500px; /* Updated to allow for dynamic content */
+  overflow-y: auto;
+  padding: 10px;
+  text-align: left;
+}
+
+.note-page-back-button {
+  text-align: center;
+  margin-top: 20px; /* Add space above the button */
+}
+
+.note-page-back-button button {
+  background-color: #4e5488;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+  cursor: pointer;
+}
+
+.note-page-back-button button:hover {
+  background-color: #525874;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Add styles for the input fields in edit mode */
+.note-page-content-container input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+.note-page-edit-button button {
+  background-color: #5cb85c;
+  margin-right: 10px;
+}
+
+.note-page-edit-button button:hover {
+  background-color: #4cae4c;
+}
+

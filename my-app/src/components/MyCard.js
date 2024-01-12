@@ -64,7 +64,10 @@ function MyCard(props) {
       'year2': '#F012BE',
       'year3': '#85144b',
       'economics': '#AAAAAA',
-      'statistics': '#DDDDDD'
+      'statistics': '#DDDDDD',
+      'imi': '#111111',
+      'e': '#01FF70',
+      'rau': '#AAAAAA',
     };
 
     return tagColors[tagName] || 'transparent';
@@ -79,7 +82,8 @@ function MyCard(props) {
 
         <div>
   {props.tags.map((tag, index) => (
-    <MyTag key={index} text={tag.TagName} color={getTagColor(tag.TagName)} />
+    // <MyTag key={index} text={tag.TagName} color={getTagColor(tag.TagName)} />
+    <MyTag key={index} text={tag} color={getTagColor(tag)} />
   ))}
 </div>
 
