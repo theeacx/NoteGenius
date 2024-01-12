@@ -54,15 +54,17 @@ function MyCard(props) {
 
   const getTagColor = (tagName) => {
     const tagColors = {
-      'Tag1': '#0074D9',
-      'Tag2': '#7FDBFF',
-      'Tag3': '#2ECC40',
-      'Tag4': '#FFDC00',
-      'Tag5': '#FF851B',
-      'Tag6': '#FF4136',
-      'Tag7': '#B10DC9',
-      'Tag8': '#F012BE',
-      'Tag9': '#85144b',
+      'important': '#0074D9',
+      'for exam': '#7FDBFF',
+      'study': '#2ECC40',
+      'programming': '#FFDC00',
+      'mathematics': '#FF851B',
+      'cybernetics': '#FF4136',
+      'year1': '#B10DC9',
+      'year2': '#F012BE',
+      'year3': '#85144b',
+      'economics': '#AAAAAA',
+      'statistics': '#DDDDDD'
     };
 
     return tagColors[tagName] || 'transparent';
@@ -76,10 +78,10 @@ function MyCard(props) {
         {subject && <Card.Text>{subject.SubjectName}</Card.Text>}
 
         <div>
-          {props.tags.map((tag, index) => (
-            <MyTag key={index} text={tag} color={getTagColor(tag)} />
-          ))}
-        </div>
+  {props.tags.map((tag, index) => (
+    <MyTag key={index} text={tag.TagName} color={getTagColor(tag.TagName)} />
+  ))}
+</div>
 
         <button id="viewButton" onClick={handleViewClick}>
           View

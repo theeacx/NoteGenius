@@ -18,6 +18,7 @@ function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
     onSubjectSelect(subjectID); 
   };
 
+
   const fetchSubjects = () => {
     axios.get('http://localhost:9000/api/subjects')
       .then((response) => {

@@ -3,6 +3,7 @@ import Tag from '../entities/Tag.js';
 import Subject from '../entities/Subject.js';
 import User from '../entities/User.js';
 import LikeOp from "./Operators.js"
+import NoteTag from '../entities/NoteTag.js';
 
 async function getNotes() {
     return await Note.findAll({include: ["Tags", "Subject","User"]});
@@ -136,6 +137,13 @@ async function getNotesWithFilterAndPagination(filter) {
   });
 }
 
+async function getTagsByNoteId(id) {
+  const note = await Note.findByPk(id, { include: { model: Tag, as: 'NoteTags' } });
+  if (!note) {
+    return [];
+  }
+  return note.Tags;
+}
 // async function getNotesWithFilterAndPagination(filter) {
 //   // Set default pagination
 //   const take = filter.take ? parseInt(filter.take) : 100;
@@ -214,5 +222,6 @@ export{
     createNote,
     updateNote,
     getNotesWithFilterAndPagination,
-    getNotesByUserId
+    getNotesByUserId,
+    getTagsByNoteId
 };

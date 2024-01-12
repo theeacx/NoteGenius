@@ -13,6 +13,10 @@ function MainPage({ userId }) {
   const [subjectData, setSubjectData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredNotes, setFilteredNotes] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [tagsMap, setTagsMap] = useState({});
+
+  
 
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
@@ -70,6 +74,17 @@ function MainPage({ userId }) {
     }
   };
 
+  const getTagsByNoteId = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/note/${id}/tags`);
+      console.log('Tags:', response.data);
+      setTags(response.data);
+    } catch (error) {
+      console.error('Error during displaying the tags:', error);
+      throw error;
+    }
+  };
+
   const addNewNote = (newNote) => {
     setPersonalNotes([...personalNotes, newNote]);
   };
@@ -84,10 +99,21 @@ function MainPage({ userId }) {
     }
   }, [userId]);
 
-  // Watch for changes in personalNotes and update filteredNotes accordingly
-  useEffect(() => {
-    setFilteredNotes(personalNotes);
-  }, [personalNotes]);
+  const fetchTagsForNotes = async () => {
+    const tagsMap = {};
+    try {
+      await Promise.all(
+        personalNotes.map(async (note) => {
+          const tags = await getTagsByNoteId(note.NoteID);
+          tagsMap[note.NoteID] = tags;
+        })
+      );
+      setTagsMap(tagsMap);
+    } catch (error) {
+      console.error('Error during displaying the tags:', error);
+      // Handle the error appropriately, e.g., set a state indicating the error
+    }
+  };
 
   return (
     <React.Fragment>
@@ -116,7 +142,8 @@ function MainPage({ userId }) {
                   userid={note.UserID}
                   subjectid={note.SubjectID}
                   groupid={1} // note.GroupID
-                  tags={['Tag1', 'Tag2', 'Tag3']}
+                  // set the tags for each note id 
+                  tags={tagsMap[note.NoteID] || []} // Use the tags for the current note
                   onDoubleClick={() => handleCardClick(note)}
                   onDelete={() => handleDelete(note.NoteID)}
                 />
