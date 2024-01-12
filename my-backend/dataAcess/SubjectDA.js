@@ -28,11 +28,18 @@ async function deleteSubject(id) {
     let subject = await Subject.findByPk(id);
     return await subject.destroy();
 }
-
+async function getSubjectsByUser(userId) {
+  if (userId) {
+    return await Subject.findAll({ where: { UserID: userId } }); // Use "UserID" to filter by user ID
+  } else {
+    return await Subject.findAll();
+  }
+}
 // Export the functions
 export {
   getSubjects,
   getSubjectById,
   createSubject,
-  deleteSubject
-};
+  deleteSubject,
+  getSubjectsByUser
+}

@@ -17,24 +17,22 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
 
 
   useEffect(() => {
-    axios.get('http://localhost:9000/api/subjects')
+    axios.get(`http://localhost:9000/api/subjects/${user}`)
       .then((response) => {
         setSubjects(response.data);
       })
       .catch((error) => {
         console.error('Error fetching subjects:', error);
       });
-
-      axios.get('http://localhost:9000/api/tags')
+  
+    axios.get('http://localhost:9000/api/tags')
       .then((response) => {
         setTags(response.data);
       })
       .catch((error) => {
         console.error('Error fetching tags:', error);
       });
-  }, [funcSubjectChange]);
-
-
+  }, [user, funcSubjectChange]);
 
   const toggleFormVisibility = () => {
     setFormVisible(!isFormVisible);
