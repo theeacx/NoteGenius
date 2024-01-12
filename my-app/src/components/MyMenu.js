@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import AddGroup from './AddGroup';
 import '../components-style/MyMenu.css';
 import AddSubject from './AddSubject';
 import { useState } from 'react';
 import axios from 'axios';
 
-function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
+const MyMenu = ({ userID, updateSubjects, onSubjectSelect, onHomeClick }) => {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [tags, setTags] = useState([]);
@@ -15,16 +15,27 @@ function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
   }, []);
 
   useEffect(() => {
-    fetchTags(); 
+    fetchTags();
   }, [selectedSubject]);
 
   const handleSubjectSelectLocal = (subjectID) => {
     setSelectedSubject(subjectID);
-    onSubjectSelect(subjectID); 
+    onSubjectSelect(subjectID);
+  };
+
+  const handleHomeClick = () => {
+    setSelectedSubject('');
+    // Add other state variables that need to be reset
+
+    // Call the onHomeClick callback if provided
+    if (onHomeClick) {
+      onHomeClick();
+    }
   };
 
   const fetchTags = () => {
-    axios.get('http://localhost:9000/api/tags')
+    axios
+      .get('http://localhost:9000/api/tags')
       .then((response) => {
         setTags(response.data);
       })
@@ -33,9 +44,9 @@ function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
       });
   };
 
-
   const fetchSubjects = () => {
-    axios.get('http://localhost:9000/api/subjects')
+    axios
+      .get('http://localhost:9000/api/subjects')
       .then((response) => {
         setSubjects(response.data);
       })
@@ -44,14 +55,13 @@ function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
       });
   };
 
-
   return (
     <div className="menu-container">
       <h3 className="menu-title">Menu</h3>
       <input type="text" placeholder="Search.." name="search" className="menu-search" />
       <ul className="menu-options">
-      <li className="menu-option home-button">Home</li>
-      <label htmlFor="subjectSelect">Subjects</label>
+        <li className="menu-option home-button" onClick={handleHomeClick}>Home</li>
+        <label htmlFor="subjectSelect">Subjects</label>
       <select
         id="subjectSelect"
         className="form-select"
@@ -97,6 +107,6 @@ function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
         </select>
     </div>
   );
-}
+};
 
 export default MyMenu;
