@@ -95,7 +95,7 @@ function MainPage({ userId }) {
         {selectedNote ? (
           <NotePage note={selectedNote} onClose={() => setSelectedNote(null)} />
         ) : (
-          <Row>
+          <React.Fragment>
             <Col md={12} className="search-bar">
               <input
                 type="text"
@@ -108,26 +108,24 @@ function MainPage({ userId }) {
               <AddNote user={userId} onNoteAdded={addNewNote} funcSubjectChange={handleSubjectSelect} />
             </Col>
             <Col md={8} className="card-list">
-              <Row>
-                {filteredNotes.map((note) => (
-                  <MyCard
-                    key={note.NoteID}
-                    title={note.Title}
-                    content={note.Content}
-                    userid={note.UserID}
-                    subjectid={note.SubjectID}
-                    groupid={1} // note.GroupID
-                    tags={['Tag1', 'Tag2', 'Tag3']}
-                    onDoubleClick={() => handleCardClick(note)}
-                    onDelete={() => handleDelete(note.NoteID)}
-                  />
-                ))}
-              </Row>
+              {filteredNotes.filter((note) => note && note.Title).map((note) => (
+                <MyCard
+                  key={note.NoteID}
+                  title={note.Title}
+                  content={note.Content}
+                  userid={note.UserID}
+                  subjectid={note.SubjectID}
+                  groupid={1} // note.GroupID
+                  tags={['Tag1', 'Tag2', 'Tag3']}
+                  onDoubleClick={() => handleCardClick(note)}
+                  onDelete={() => handleDelete(note.NoteID)}
+                />
+              ))}
             </Col>
             <Col md={4} className="menu-column">
               <MyMenu userID={userId} updateSubjects={updateSubjects} onSubjectSelect={handleSubjectSelect} />
             </Col>
-          </Row>
+          </React.Fragment>
         )}
       </Container>
     </React.Fragment>

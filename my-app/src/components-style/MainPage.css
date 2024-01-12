@@ -35,6 +35,7 @@
   border-radius: 4px;
   padding: 1rem;
   background-color: #fff;
+  max-width: 200px; 
 }
 
 
@@ -79,3 +80,11 @@
     margin-right: 300px; 
   }
 }
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Adjust this to fit with the sidebar */
+  gap: 0.1rem;
+  margin-top: 1rem;
+  padding-right: 450px; /* equal to the width of the sidebar */
+}
+
