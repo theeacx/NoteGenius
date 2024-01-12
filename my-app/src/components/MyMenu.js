@@ -8,14 +8,29 @@ import axios from 'axios';
 function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     fetchSubjects();
   }, []);
 
+  useEffect(() => {
+    fetchTags(); 
+  }, [selectedSubject]);
+
   const handleSubjectSelectLocal = (subjectID) => {
     setSelectedSubject(subjectID);
     onSubjectSelect(subjectID); 
+  };
+
+  const fetchTags = () => {
+    axios.get('http://localhost:9000/api/tags')
+      .then((response) => {
+        setTags(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching tags:', error);
+      });
   };
 
 
@@ -52,12 +67,20 @@ function MyMenu({ userID, updateSubjects, onSubjectSelect }) {
         ))}
       </select>
         <AddSubject user={userID} updateSubjects={updateSubjects} />
-        <select className="form-select" aria-label="Default select example" defaultValue="Tags">
+        <select 
+          className="form-select" 
+          aria-label="Default select example" 
+          defaultValue="Tags"
+          onChange={fetchTags}
+        >
           <option value="Tags">Tags</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          {tags.map((tag) => (
+            <option key={tag.TagID} value={tag.TagID}>
+              {tag.TagName}
+            </option>
+          ))}
         </select>
+        
         <select className="form-select" aria-label="Default select example" defaultValue="Groups">
           <option value="Groups">Groups</option>
           <option value="1">One</option>
