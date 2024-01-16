@@ -1,5 +1,3 @@
-// MainPage.js
-
 import React, { useEffect, useState } from 'react';
 import { Container, Col } from 'react-bootstrap';
 import axios from 'axios';
@@ -8,6 +6,7 @@ import MyMenu from './MyMenu';
 import AddNote from './AddNote';
 import NotePage from './NotePage';
 import '../components-style/MainPage.css';
+import '../components-style/TagSelectionPopup.css'; 
 
 const MainPage = ({ userId }) => {
   const [personalNotes, setPersonalNotes] = useState([]);
@@ -17,6 +16,7 @@ const MainPage = ({ userId }) => {
   const [tags, setTags] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedTag, setSelectedTag] = useState(null);
 
   const fetchAllTags = async () => {
     try {
@@ -77,6 +77,8 @@ const MainPage = ({ userId }) => {
   };
 
   const handleTagSelect = (selectedTag) => {
+    // Update the selected tag
+    setSelectedTag(selectedTag);
     // Filter notes based on the selected tag and subject
     handleSubjectTagFilter(selectedSubject, selectedTag);
   };
@@ -84,7 +86,7 @@ const MainPage = ({ userId }) => {
   const handleSubjectSelect = (subjectID) => {
     // Set the selected subject and filter notes based on the selected subject and tag
     setSelectedSubject(subjectID);
-    handleSubjectTagFilter(subjectID, null);
+    handleSubjectTagFilter(subjectID, selectedTag);
   };
 
   const handleDelete = async (noteID) => {
@@ -189,6 +191,7 @@ const MainPage = ({ userId }) => {
                 funcSubjectChange={handleSubjectSelect}
                 subjects={subjects}
                 onTagSelect={handleTagSelect}
+                selectedTag={selectedTag} // Pass the selected tag to AddNote
               />
             </Col>
             <Col md={8} className="card-list">
@@ -203,6 +206,7 @@ const MainPage = ({ userId }) => {
                     subjectid={note.SubjectID}
                     groupid={1} // note.GroupID
                     tags={tags[note.NoteID] || []}
+                    selectedTag={selectedTag} // Pass the selected tag to MyCard
                     onDoubleClick={() =>
                       handleCardClick(note)
                     }
@@ -225,8 +229,7 @@ const MainPage = ({ userId }) => {
         )}
       </Container>
     </React.Fragment>
- 
- );
+  );
 };
 
 export default MainPage;

@@ -1,17 +1,20 @@
+// MyCard.js
 import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import MyTag from './MyTag';
 import '../components-style/MyCard.css';
 import axios from 'axios';
+import TagSelectionPopup from './TagSelectionPopup'; 
 
 function MyCard(props) {
   const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
+  const [isTagSelectionOpen, setIsTagSelectionOpen] = useState(false); 
+  const [selectedTags, setSelectedTags] = useState(props.tags);
 
   const getSubjectById = async (id) => {
     try {
       const response = await axios.get(`http://localhost:9000/api/subject/${id}`);
-      console.log('Subject:', response.data);
       setSubject(response.data);
     } catch (error) {
       console.error('Error during displaying the personal notes:', error);
@@ -40,6 +43,15 @@ function MyCard(props) {
     if (typeof props.onDelete === 'function') {
       props.onDelete();
     }
+  };
+
+  const handleTagSelection = (selectedTags) => {
+    // Update the tags for the current card
+
+
+    // Close the tag selection pop-up
+    setIsTagSelectionOpen(false);
+    setSelectedTags(selectedTags);
   };
 
   useEffect(() => {
@@ -79,9 +91,22 @@ function MyCard(props) {
         <Card.Title>{props.title}</Card.Title>
         {user && <Card.Text>{user.FirstName} {user.LastName}</Card.Text>}
         {subject && <Card.Text>{subject.SubjectName}</Card.Text>}
-        {props.tags.map((tag, index) => (
+        {selectedTags.map((tag, index) => (
           <MyTag key={index} text={tag} color={getTagColor(tag)} />
         ))}
+
+        <button id="addTagButton" onClick={() => setIsTagSelectionOpen(true)}>
+          Add Tag
+        </button>
+
+        {isTagSelectionOpen && (
+          <TagSelectionPopup
+            selectedSubjectID={props.subjectid}
+            existingTags={selectedTags}
+            onSelectTags={(selectedTags) => handleTagSelection(selectedTags)}
+            onClose={() => setIsTagSelectionOpen(false)}
+          />
+        )}
 
         <button id="viewButton" onClick={handleViewClick}>
           View

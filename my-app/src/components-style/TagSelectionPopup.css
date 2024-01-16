@@ -1,0 +1,48 @@
+/* TagSelectionPopup.css */
+
+.tag-selection-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff; /* Set the background color you want */
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    max-width: 400px; /* Adjust the maximum width as needed */
+    width: 100%;
+  }
+  
+  .tag-selection-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .tag-selection-item {
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f8f8f8; /* Set the background color you want for each item */
+  }
+  
+  .tag-selection-item:hover {
+    background-color: #e0e0e0; /* Set the background color you want for hover effect */
+  }
+  
+  .tag-selection-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #888;
+    font-size: 18px;
+  }
+  
+  .tag-selection-close:hover {
+    color: #333;
+  }
+  
