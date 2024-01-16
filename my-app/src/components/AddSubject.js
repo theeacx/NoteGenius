@@ -25,7 +25,6 @@ function AddSubject({ user, onSubjectAdded, updateSubjects }) {
     setFormVisible(!isFormVisible);
   };
 
-
   const handleSaveSubject = () => {
     console.log('Subject Data:', subjectData);
     axios.post('http://localhost:9000/api/subject', subjectData, {
@@ -36,13 +35,13 @@ function AddSubject({ user, onSubjectAdded, updateSubjects }) {
       if (typeof onSubjectAdded === 'function') {
         onSubjectAdded(response.data.obj);
       }
-      // If the updateSubjects function is provided, call it to update the subjects
+      
       if (typeof updateSubjects === 'function') {
         updateSubjects();
       }
-      // This will hide the form after the subject is saved
+      
       toggleFormVisibility();
-      // Reset the subject data state if needed
+    
       setSubjectData({
         SubjectName: '',
         UserID: user 
