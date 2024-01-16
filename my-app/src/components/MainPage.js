@@ -226,6 +226,12 @@ const MainPage = ({ userId }) => {
                     onDelete={() =>
                       handleDelete(note.NoteID)
                     }
+                    onTagsUpdate={(updatedTags) =>
+                      setTags((prevTags) => ({
+                        ...prevTags,
+                        [note.NoteID]: updatedTags,
+                      }))
+                    }
                   />
                 ))}
             </Col>

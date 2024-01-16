@@ -160,6 +160,32 @@ async function getTagsByNoteId(noteId) {
   }
 }
 
+//update the tags for a note
+async function updateTagsByNoteId(noteId, tags) {
+  try {
+    const note = await Note.findByPk(noteId);
+    if (!note) {
+      console.error('No note found with id:', noteId);
+      return { error: true, msg: "Invalid note id" };
+    }
+
+    // Delete all existing tags for the note
+    await NoteTag.destroy({ where: { NoteID: noteId } });
+
+    // Create new tags for the note
+    const newTags = tags.map(tag => ({
+      NoteID: noteId,
+      TagName: tag.TagName
+    }));
+    await NoteTag.bulkCreate(newTags);
+
+    return { error: false, msg: "Tags updated successfully" };
+  } catch (error) {
+    console.error('Error during updating tags for the note:', error);
+    throw error;
+  }
+}
+
 // async function getNotesWithFilterAndPagination(filter) {
 //   // Set default pagination
 //   const take = filter.take ? parseInt(filter.take) : 100;
@@ -239,5 +265,6 @@ export{
     updateNote,
     getNotesWithFilterAndPagination,
     getNotesByUserId,
-    getTagsByNoteId
+    getTagsByNoteId,
+    updateTagsByNoteId
 };

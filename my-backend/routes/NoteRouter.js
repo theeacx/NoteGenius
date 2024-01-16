@@ -6,7 +6,8 @@ import {getNotes,
         updateNote,
         getNotesWithFilterAndPagination,
         getNotesByUserId,
-        getTagsByNoteId} from "../dataAcess/NoteDA.js";
+        getTagsByNoteId,
+        updateTagsByNoteId} from "../dataAcess/NoteDA.js";
 let noteRouter = express.Router();
 noteRouter.route("/note").post(async (req, res) => {
     return res.status(201).json(await createNote(req.body));
@@ -42,6 +43,10 @@ noteRouter.route("/note/:id/tags").get(async (req, res) => {
     return res.json(await getTagsByNoteId(req.params.id));
 });
 
+//route for updating the tags for a note
+noteRouter.route("/note/:id/tags").put(async (req, res) => {
+    return res.json(await updateTagsByNoteId(req.params.id, req.body));
+});
 
 
 
