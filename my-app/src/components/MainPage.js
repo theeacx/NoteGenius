@@ -25,7 +25,7 @@ const MainPage = ({ userId }) => {
 
   const handleSubjectSelect = (subjectID) => {
     const filteredBySubject = personalNotes.filter(
-      (note) => note.SubjectID === subjectID
+      (note) => note.SubjectID.toString() === subjectID
     );
     const filteredBySearch = filteredBySubject.filter((note) =>
       note.Title.toLowerCase().includes(searchQuery)

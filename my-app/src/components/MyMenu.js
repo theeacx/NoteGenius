@@ -46,7 +46,7 @@ const MyMenu = ({ userID, updateSubjects, onSubjectSelect, onHomeClick }) => {
 
   const fetchSubjects = () => {
     axios
-      .get('http://localhost:9000/api/subjects')
+      .get(`http://localhost:9000/api/subjects/${userID}`) // Adjust the endpoint as per your API design
       .then((response) => {
         setSubjects(response.data);
       })
