@@ -39,12 +39,15 @@ const MainPage = ({ userId }) => {
         `http://localhost:9000/api/note/${noteID}`
       );
       console.log('Note deleted:', response.data);
-
+  
       const newNotes = personalNotes.filter(
         (note) => note.NoteID !== noteID
       );
       setPersonalNotes(newNotes);
-
+  
+      // Update filteredNotes as well
+      setFilteredNotes(newNotes);
+  
       if (selectedNote && selectedNote.NoteID === noteID) {
         setSelectedNote(null);
       }
@@ -52,6 +55,7 @@ const MainPage = ({ userId }) => {
       console.error('Error during deleting the note:', error);
     }
   };
+  
 
   const getNotesByUserId = async (id) => {
     try {
@@ -71,7 +75,11 @@ const MainPage = ({ userId }) => {
   };
 
   const addNewNote = (newNote) => {
-    setPersonalNotes([...personalNotes, newNote]);
+    const updatedPersonalNotes = [...personalNotes, newNote];
+    setPersonalNotes(updatedPersonalNotes);
+  
+    // Assuming no active filters, add the new note to filteredNotes as well
+    setFilteredNotes(updatedPersonalNotes);
   };
 
   const handleCardClick = (note) => {
