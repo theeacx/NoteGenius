@@ -16,25 +16,26 @@ const MainPage = ({ userId }) => {
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [tags, setTags] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
 
   const fetchAllTags = async () => {
     try {
       const response = await axios.get(`http://localhost:9000/api/notes`);
       const tagsMap = {};
-      
+
       response.data.forEach((note) => {
         const noteId = note.NoteID;
         const tags = note.Tags.map((tag) => tag.TagName);
         tagsMap[noteId] = tags;
       });
-  
+
       console.log('Tags:', tagsMap);
       setTags(tagsMap);
     } catch (error) {
       console.error('Error fetching tags:', error);
     }
   };
-  
+
   const fetchSubjects = async () => {
     try {
       const response = await axios.get(`http://localhost:9000/api/subjects/${userId}`);
@@ -54,14 +55,36 @@ const MainPage = ({ userId }) => {
     setFilteredNotes(filtered);
   };
 
-  const handleSubjectSelect = (subjectID) => {
+  const handleSubjectTagFilter = (subjectID, selectedTag) => {
     const filteredBySubject = personalNotes.filter(
       (note) => note.SubjectID.toString() === subjectID
     );
-    const filteredBySearch = filteredBySubject.filter((note) =>
+
+    let filteredNotes = filteredBySubject;
+
+    if (selectedTag) {
+      // If a tag is selected, further filter by the tag
+      filteredNotes = filteredBySubject.filter((note) =>
+        tags[note.NoteID]?.includes(selectedTag)
+      );
+    }
+
+    const filteredBySearch = filteredNotes.filter((note) =>
       note.Title.toLowerCase().includes(searchQuery)
     );
+
     setFilteredNotes(filteredBySearch);
+  };
+
+  const handleTagSelect = (selectedTag) => {
+    // Filter notes based on the selected tag and subject
+    handleSubjectTagFilter(selectedSubject, selectedTag);
+  };
+
+  const handleSubjectSelect = (subjectID) => {
+    // Set the selected subject and filter notes based on the selected subject and tag
+    setSelectedSubject(subjectID);
+    handleSubjectTagFilter(subjectID, null);
   };
 
   const handleDelete = async (noteID) => {
@@ -70,15 +93,14 @@ const MainPage = ({ userId }) => {
         `http://localhost:9000/api/note/${noteID}`
       );
       console.log('Note deleted:', response.data);
-  
+
       const newNotes = personalNotes.filter(
         (note) => note.NoteID !== noteID
       );
       setPersonalNotes(newNotes);
-  
-      
+
       setFilteredNotes(newNotes);
-  
+
       if (selectedNote && selectedNote.NoteID === noteID) {
         setSelectedNote(null);
       }
@@ -107,7 +129,7 @@ const MainPage = ({ userId }) => {
   const addNewNote = (newNote) => {
     const updatedPersonalNotes = [...personalNotes, newNote];
     setPersonalNotes(updatedPersonalNotes);
-  
+
     setFilteredNotes(updatedPersonalNotes);
   };
 
@@ -117,19 +139,19 @@ const MainPage = ({ userId }) => {
 
   const handleNoteUpdated = (noteID, updatedData) => {
     const updatedNotes = personalNotes.map((note) =>
-        note.NoteID === noteID ? { ...note, ...updatedData } : note
+      note.NoteID === noteID ? { ...note, ...updatedData } : note
     );
     setPersonalNotes(updatedNotes);
 
-    
     const updatedFilteredNotes = filteredNotes.map((note) =>
-        note.NoteID === noteID ? { ...note, ...updatedData } : note
+      note.NoteID === noteID ? { ...note, ...updatedData } : note
     );
     setFilteredNotes(updatedFilteredNotes);
   };
 
   const handleHomeClick = () => {
     setSearchQuery('');
+    setSelectedSubject('');
     setFilteredNotes(personalNotes);
   };
 
@@ -165,7 +187,8 @@ const MainPage = ({ userId }) => {
                 user={userId}
                 onNoteAdded={addNewNote}
                 funcSubjectChange={handleSubjectSelect}
-                subjects={subjects} // Pass subjects to AddNote
+                subjects={subjects}
+                onTagSelect={handleTagSelect}
               />
             </Col>
             <Col md={8} className="card-list">
@@ -194,14 +217,16 @@ const MainPage = ({ userId }) => {
                 userID={userId}
                 onSubjectSelect={handleSubjectSelect}
                 onHomeClick={handleHomeClick}
-                updateSubjects={fetchSubjects} // Pass fetchSubjects to MyMenu
+                updateSubjects={fetchSubjects}
+                onTagSelect={handleTagSelect}
               />
             </Col>
           </React.Fragment>
         )}
       </Container>
     </React.Fragment>
-  );
+ 
+ );
 };
 
 export default MainPage;

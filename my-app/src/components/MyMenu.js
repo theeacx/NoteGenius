@@ -1,5 +1,3 @@
-// MyMenu.js
-
 import React, { useEffect } from 'react';
 import AddGroup from './AddGroup';
 import '../components-style/MyMenu.css';
@@ -7,17 +5,18 @@ import AddSubject from './AddSubject';
 import { useState } from 'react';
 import axios from 'axios';
 
-const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects }) => {
+const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSelect }) => {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [tags, setTags] = useState([]);
+  const [selectedTag, setSelectedTag] = useState('');
 
   useEffect(() => {
     fetchSubjects();
   }, [updateSubjects]);
 
   useEffect(() => {
-    fetchTags();
+    fetchTags(selectedSubject); // Fetch tags for the selected subject
   }, [selectedSubject]);
 
   const handleSubjectSelectLocal = (subjectID) => {
@@ -27,15 +26,16 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects }) => {
 
   const handleHomeClick = () => {
     setSelectedSubject('');
-   
+    setSelectedTag('');
+    
     if (onHomeClick) {
       onHomeClick();
     }
   };
 
-  const fetchTags = () => {
+  const fetchTags = (subjectID) => {
     axios
-      .get('http://localhost:9000/api/tags')
+      .get(`http://localhost:9000/api/tags/${subjectID}`) // Fetch tags for the selected subject
       .then((response) => {
         setTags(response.data);
       })
@@ -43,6 +43,12 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects }) => {
         console.error('Error fetching tags:', error);
       });
   };
+
+  const handleTagSelect = (tagID) => {
+    setSelectedTag(tagID);
+    onTagSelect(tagID);
+  };
+
 
   const fetchSubjects = () => {
     axios
@@ -77,20 +83,19 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects }) => {
           ))}
         </select>
         <AddSubject user={userID} updateSubjects={updateSubjects} />
-        <select 
-          className="form-select" 
-          aria-label="Default select example" 
-          defaultValue="Tags"
-          onChange={fetchTags}
-        >
-          <option value="Tags">Tags</option>
-          {tags.map((tag) => (
-            <option key={tag.TagID} value={tag.TagID}>
-              {tag.TagName}
-            </option>
-          ))}
-        </select>
-        
+        <select
+        className="form-select"
+        aria-label="Default select example"
+        defaultValue="Tags"
+        onChange={(e) => handleTagSelect(e.target.value)}
+      >
+        <option value="Tags">Tags</option>
+        {tags.map((tag) => (
+          <option key={tag.TagID} value={tag.TagName}>
+            {tag.TagName}
+          </option>
+        ))}
+      </select>    
         <select className="form-select" aria-label="Default select example" defaultValue="Groups">
           <option value="Groups">Groups</option>
           <option value="1">One</option>
