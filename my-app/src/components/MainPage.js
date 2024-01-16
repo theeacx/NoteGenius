@@ -79,11 +79,16 @@ const MainPage = ({ userId }) => {
   };
 
   const handleNoteUpdated = (noteID, updatedData) => {
-    setPersonalNotes((prevNotes) =>
-      prevNotes.map((note) =>
+    const updatedNotes = personalNotes.map((note) =>
         note.NoteID === noteID ? { ...note, ...updatedData } : note
-      )
     );
+    setPersonalNotes(updatedNotes);
+
+    // Update filteredNotes as well if they include the edited note
+    const updatedFilteredNotes = filteredNotes.map((note) =>
+        note.NoteID === noteID ? { ...note, ...updatedData } : note
+    );
+    setFilteredNotes(updatedFilteredNotes);
   };
 
   const handleHomeClick = () => {
