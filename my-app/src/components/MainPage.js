@@ -165,6 +165,19 @@ const MainPage = ({ userId }) => {
     }
   }, [userId]);
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (userId) {
+        await getNotesByUserId(userId);
+        await fetchAllTags();
+        await fetchSubjects();
+      }
+    };
+  
+    fetchData();
+  }, [userId]);
+
   return (
     <React.Fragment>
       <Container fluid className="main-page-container">
