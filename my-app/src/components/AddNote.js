@@ -1,20 +1,20 @@
+// AddNote.js
+
 import React, { useState, useEffect } from 'react';
 import '../components-style/AddNote.css';
 import axios from 'axios';
 
 function AddNote({ user, onNoteAdded, funcSubjectChange }) {
-
   const [isFormVisible, setFormVisible] = useState(false);
   const [tags, setTags] = useState([]);
   const [noteData, setNoteData] = useState({
     Title: '',
     Content: '',
-    SubjectID: '',  
-    UserID: '',   
+    SubjectID: '',
+    UserID: '',
   });
 
   const [subjects, setSubjects] = useState([]);
-
 
   useEffect(() => {
     axios.get(`http://localhost:9000/api/subjects/${user}`)
@@ -24,7 +24,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       .catch((error) => {
         console.error('Error fetching subjects:', error);
       });
-  
+
     axios.get('http://localhost:9000/api/tags')
       .then((response) => {
         setTags(response.data);
@@ -38,7 +38,6 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
     setFormVisible(!isFormVisible);
   };
 
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNoteData({
@@ -47,45 +46,39 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
     });
   };
 
-  const handleTagChange = (e) => {
-    //to be added
-  };
-
   const handleSubjectChange = (e) => {
     setNoteData({
       ...noteData,
-      SubjectID: e.target.value,  
+      SubjectID: e.target.value,
     });
   };
 
   useEffect(() => {
     setNoteData((prevNoteData) => ({
       ...prevNoteData,
-      UserID: user 
+      UserID: user,
     }));
-  }, [user]); 
-
-
+  }, [user]);
 
   const handleSaveNote = () => {
     console.log('Note Data:', noteData);
     axios.post('http://localhost:9000/api/note', noteData, {
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
     })
-    .then((response) => {
-      console.log("Note created successfully:", response.data);
-      onNoteAdded(response.data.obj); 
-      setNoteData({
-        Title: '',
-        Content: '',
-        SubjectID: '',
-        UserID: '',
+      .then((response) => {
+        console.log("Note created successfully:", response.data);
+        onNoteAdded(response.data.obj);
+        setNoteData({
+          Title: '',
+          Content: '',
+          SubjectID: '',
+          UserID: '',
+        });
+        toggleFormVisibility();
+      })
+      .catch((error) => {
+        console.error("Error creating note:", error);
       });
-      toggleFormVisibility();
-    })
-    .catch((error) => {
-      console.error("Error creating note:", error);
-    });
   };
 
   return (
@@ -93,7 +86,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
       <button onClick={toggleFormVisibility}>Add Note</button>
       {isFormVisible && (
         <div className="note-form">
-           <label htmlFor="subjectSelect">Select Subject:</label>
+          <label htmlFor="subjectSelect">Select Subject:</label>
           <select
             id="subjectSelect"
             className="form-select"
@@ -103,7 +96,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
             name="SubjectID"
           >
             <option value="">Select Subject</option>
-           
+
             {subjects.map((subject) => (
               <option key={subject.SubjectID} value={subject.SubjectID}>
                 {subject.SubjectName}
@@ -111,28 +104,11 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
             ))}
           </select>
 
-          {/* <label htmlFor="tagSelect">Select Tag:</label>
-          <select
-          id="tagSelect"
-          className="form-select"
-          aria-label="Default select example"
-          value={noteData.TagID}
-          onChange={handleTagChange}
-          name="TagID"
-        >
-          <option value="">Select Tag</option>
-          {tags.map((tag) => (
-            <option key={tag.TagID} value={tag.TagID}>
-              {tag.TagName}
-            </option>
-          ))}
-        </select> */}
-
           <label htmlFor="noteTitle">Note Title:</label>
           <input
             type="text"
             id="noteTitle"
-            name="Title"  
+            name="Title"
             value={noteData.Title}
             onChange={handleInputChange}
             placeholder="Enter note title"
@@ -141,7 +117,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
           <label htmlFor="noteContent">Note Content:</label>
           <textarea
             id="noteContent"
-            name="Content"  
+            name="Content"
             value={noteData.Content}
             onChange={handleInputChange}
             placeholder="Enter note content"

@@ -1,10 +1,12 @@
+// MainPage.js
+
 import React, { useEffect, useState } from 'react';
+import { Container, Col } from 'react-bootstrap';
+import axios from 'axios';
 import MyCard from './MyCard';
 import MyMenu from './MyMenu';
 import AddNote from './AddNote';
 import NotePage from './NotePage';
-import { Container, Col } from 'react-bootstrap';
-import axios from 'axios';
 import '../components-style/MainPage.css';
 
 const MainPage = ({ userId }) => {
@@ -13,6 +15,7 @@ const MainPage = ({ userId }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [tags, setTags] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   const fetchAllTags = async () => {
     try {
@@ -32,9 +35,15 @@ const MainPage = ({ userId }) => {
     }
   };
   
-  
- 
-  
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/subjects/${userId}`);
+      setSubjects(response.data);
+    } catch (error) {
+      console.error('Error fetching subjects:', error);
+    }
+  };
+
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -67,7 +76,7 @@ const MainPage = ({ userId }) => {
       );
       setPersonalNotes(newNotes);
   
-      // Update filteredNotes as well
+      
       setFilteredNotes(newNotes);
   
       if (selectedNote && selectedNote.NoteID === noteID) {
@@ -77,7 +86,6 @@ const MainPage = ({ userId }) => {
       console.error('Error during deleting the note:', error);
     }
   };
-  
 
   const getNotesByUserId = async (id) => {
     try {
@@ -100,7 +108,6 @@ const MainPage = ({ userId }) => {
     const updatedPersonalNotes = [...personalNotes, newNote];
     setPersonalNotes(updatedPersonalNotes);
   
-    // Assuming no active filters, add the new note to filteredNotes as well
     setFilteredNotes(updatedPersonalNotes);
   };
 
@@ -114,7 +121,7 @@ const MainPage = ({ userId }) => {
     );
     setPersonalNotes(updatedNotes);
 
-    // Update filteredNotes as well if they include the edited note
+    
     const updatedFilteredNotes = filteredNotes.map((note) =>
         note.NoteID === noteID ? { ...note, ...updatedData } : note
     );
@@ -124,13 +131,13 @@ const MainPage = ({ userId }) => {
   const handleHomeClick = () => {
     setSearchQuery('');
     setFilteredNotes(personalNotes);
-    // Add other state variables that need to be reset
   };
 
   useEffect(() => {
     if (userId) {
       getNotesByUserId(userId);
       fetchAllTags();
+      fetchSubjects();
     }
   }, [userId]);
 
@@ -158,6 +165,7 @@ const MainPage = ({ userId }) => {
                 user={userId}
                 onNoteAdded={addNewNote}
                 funcSubjectChange={handleSubjectSelect}
+                subjects={subjects} // Pass subjects to AddNote
               />
             </Col>
             <Col md={8} className="card-list">
@@ -185,7 +193,8 @@ const MainPage = ({ userId }) => {
               <MyMenu
                 userID={userId}
                 onSubjectSelect={handleSubjectSelect}
-                onHomeClick={handleHomeClick} // Pass the callback to reset filter
+                onHomeClick={handleHomeClick}
+                updateSubjects={fetchSubjects} // Pass fetchSubjects to MyMenu
               />
             </Col>
           </React.Fragment>

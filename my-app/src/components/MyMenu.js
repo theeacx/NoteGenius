@@ -1,19 +1,20 @@
 // MyMenu.js
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import AddGroup from './AddGroup';
 import '../components-style/MyMenu.css';
 import AddSubject from './AddSubject';
+import { useState } from 'react';
 import axios from 'axios';
 
-const MyMenu = ({ userID, onSubjectSelect, onHomeClick }) => {
+const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects }) => {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
     fetchSubjects();
-  }, []);
+  }, [updateSubjects]);
 
   useEffect(() => {
     fetchTags();
@@ -26,7 +27,7 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick }) => {
 
   const handleHomeClick = () => {
     setSelectedSubject('');
-    
+   
     if (onHomeClick) {
       onHomeClick();
     }
@@ -52,10 +53,6 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick }) => {
       .catch((error) => {
         console.error('Error fetching subjects:', error);
       });
-  };
-
-  const updateSubjects = () => {
-    fetchSubjects();
   };
 
   return (
