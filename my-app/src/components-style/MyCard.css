@@ -1,6 +1,6 @@
 .card {
     width: 14rem; 
-    height: 10rem; 
+    height: 12rem; 
     margin: 10px;
     border: 1px solid #22252b;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
@@ -48,3 +48,56 @@
     font-size: 0.8rem; 
   }
   
+  #addTagButton{
+    background-color: #4e5488;
+    color: white;
+    padding: 10px;
+    border: 1px solid #525874;
+    border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+    cursor: pointer;
+  }
+  
+  #addTagButton:hover{
+    background-color: #525874;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  #deleteButton{
+    background-color: #4e5488;
+    color: white;
+    padding: 10px;
+    border: 1px solid #525874;
+    border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+    cursor: pointer;
+  }
+
+  #deleteButton:hover{
+    background-color: #525874;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  #viewButton{
+    background-color: #4e5488;
+    color: white;
+    padding: 10px;
+    border: 1px solid #525874;
+    border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+    cursor: pointer;
+  }
+
+  #viewButton:hover{
+    background-color: #525874;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }

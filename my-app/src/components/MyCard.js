@@ -96,7 +96,7 @@ function MyCard(props) {
         ))}
 
         <button id="addTagButton" onClick={() => setIsTagSelectionOpen(true)}>
-          Add Tag
+          Select Tag
         </button>
 
         {isTagSelectionOpen && (

@@ -9,18 +9,18 @@ const TagSelectionPopup = ({ selectedSubjectID, existingTags, onSelectTags, onCl
     fetchTags();
   }, [selectedSubjectID]);
 
-  const fetchTags = () => {
-    if (selectedSubjectID) {
-      axios
-        .get(`http://localhost:9000/api/tags/${selectedSubjectID}`)
-        .then((response) => {
-          setTags(response.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching tags:', error);
-        });
-    }
-  };
+
+const fetchTags = async () => {
+  try {
+    const response = await axios.get('http://localhost:9000/api/tags'); 
+    setTags(response.data); // Set the tags in state
+  } catch (error) {
+    console.error('Error fetching tags:', error);
+  }
+};
+
+
+  console.log(tags);
 
   const handleTagToggle = (tagID, checked) => {
     onSelectTags((prevTags) => {
@@ -34,23 +34,26 @@ const TagSelectionPopup = ({ selectedSubjectID, existingTags, onSelectTags, onCl
 
   return (
     <div>
-      <h4>Existing Tags</h4>
+    <div className="tag-list-container">
       <ul>
         {tags.map((tag) => (
-          <li key={tag.TagID}>
+          <li key={tag.TagID} className="tag-list-item">
             <label>
               <input
                 type="checkbox"
-                checked={existingTags.includes(tag.TagID)}
-                onChange={(e) => handleTagToggle(tag.TagID, e.target.checked)}
+                className="tag-checkbox"
+                checked={existingTags.includes(tag.TagName)}
+                onChange={(e) => handleTagToggle(tag.TagName, e.target.checked)}
               />
               {tag.TagName}
             </label>
           </li>
         ))}
       </ul>
-      <button onClick={onClose}>Close</button>
     </div>
+    <button id="closeBtn" onClick={onClose}>Close</button>
+  </div>
+
   );
 };
 
