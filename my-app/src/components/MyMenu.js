@@ -16,7 +16,7 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
   }, [updateSubjects]);
 
   useEffect(() => {
-    fetchTags(selectedSubject); // Fetch tags for the selected subject
+    fetchTags(selectedSubject);
   }, [selectedSubject]);
 
   const handleSubjectSelectLocal = (subjectID) => {
@@ -27,7 +27,7 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
   const handleHomeClick = () => {
     setSelectedSubject('');
     setSelectedTag('');
-    
+
     if (onHomeClick) {
       onHomeClick();
     }
@@ -35,7 +35,7 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
 
   const fetchTags = (subjectID) => {
     axios
-      .get(`http://localhost:9000/api/tags/${subjectID}`) // Fetch tags for the selected subject
+      .get(`http://localhost:9000/api/tags/${subjectID}`)
       .then((response) => {
         setTags(response.data);
       })
@@ -48,7 +48,6 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
     setSelectedTag(tagID);
     onTagSelect(tagID);
   };
-
 
   const fetchSubjects = () => {
     axios
@@ -73,7 +72,7 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
           className="form-select"
           aria-label="Default select example"
           value={selectedSubject}
-          onChange={(e) => handleSubjectSelectLocal(e.target.value)} 
+          onChange={(e) => handleSubjectSelectLocal(e.target.value)}
         >
           <option value="">Select Subject</option>
           {subjects.map((subject) => (
@@ -84,18 +83,18 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
         </select>
         <AddSubject user={userID} updateSubjects={updateSubjects} />
         <select
-        className="form-select"
-        aria-label="Default select example"
-        defaultValue="Tags"
-        onChange={(e) => handleTagSelect(e.target.value)}
-      >
-        <option value="Tags">Tags</option>
-        {tags.map((tag) => (
-          <option key={tag.TagID} value={tag.TagName}>
-            {tag.TagName}
-          </option>
-        ))}
-      </select>    
+  className="form-select"
+  aria-label="Default select example"
+  value={selectedTag}
+  onChange={(e) => handleTagSelect(e.target.value)}
+>
+  <option value="">Select Tag</option>
+  {tags.map((tag) => (
+    <option key={tag.TagID} value={tag.TagName}>
+      {tag.TagName}
+    </option>
+  ))}
+        </select>
         <select className="form-select" aria-label="Default select example" defaultValue="Groups">
           <option value="Groups">Groups</option>
           <option value="1">One</option>
