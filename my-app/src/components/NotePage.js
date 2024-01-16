@@ -2,107 +2,126 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../components-style/NotePage.css';
 
-function NotePage({ note, onClose, onNoteUpdated }) {
-    const [editMode, setEditMode] = useState(false);
-    const [noteData, setNoteData] = useState({
-        Title: '',
-        Content: '',
-        SubjectID: '',
-        SubjectName: '',
+function formatContent(content) {
+    const styleMapping = {
+      h1: 'color: #ca99ff; font-size: 24px; font-weight: bold;',
+      h2: 'color: #a3b6ff; font-size: 20px; font-weight: bold;',
+      p: 'font-size: 16px; color: white; line-height: 1.5;',
+      strong: 'font-weight: bold; color: #4b0082;',
+      em: 'font-style: italic; color: #1e90ff;',
+      u: 'text-decoration: underline; color: #9400d3;',
+    };
+  
+    const formattedContent = content.replace(/<(\w+)>/g, (match, tag) => {
+      const style = styleMapping[tag.toLowerCase()] || '';
+      return `<${tag} style="${style}">`;
     });
+  
+    return formattedContent;
+  }
 
-    const handleEditNote = () => {
-        axios
-            .put(`http://localhost:9000/api/note/${note.NoteID}`, noteData, {
-                headers: { 'Content-Type': 'application/json' },
-            })
-            .then((response) => {
-                console.log('Note updated successfully:', response.data);
-                setEditMode(false);
-                onNoteUpdated(note.NoteID, noteData);
-            })
-            .catch((error) => {
-                console.error('Error updating note:', error);
-            });
-    };
+function NotePage({ note, onClose, onNoteUpdated }) {
+  const [editMode, setEditMode] = useState(false);
+  const [noteData, setNoteData] = useState({
+    Title: '',
+    Content: '',
+    SubjectID: '',
+    SubjectName: '',
+  });
 
-    useEffect(() => {
-        if (note) {
-            setNoteData({
-                Title: note.Title,
-                Content: note.Content,
-                SubjectID: note.SubjectID,
-            });
-            fetchSubjectName(note.SubjectID);
-        }
-    }, [note]);
+  const handleEditNote = () => {
+    axios
+      .put(`http://localhost:9000/api/note/${note.NoteID}`, noteData, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then((response) => {
+        console.log('Note updated successfully:', response.data);
+        setEditMode(false);
+        onNoteUpdated(note.NoteID, noteData);
+      })
+      .catch((error) => {
+        console.error('Error updating note:', error);
+      });
+  };
 
-    const fetchSubjectName = (subjectID) => {
-        axios
-            .get(`http://localhost:9000/api/subject/${subjectID}`)
-            .then((response) => {
-                setNoteData((prevNoteData) => ({
-                    ...prevNoteData,
-                    SubjectName: response.data.SubjectName,
-                }));
-            })
-            .catch((error) => {
-                console.error('Error fetching subject name:', error);
-            });
-    };
+  useEffect(() => {
+    if (note) {
+      setNoteData({
+        Title: note.Title,
+        Content: note.Content,
+        SubjectID: note.SubjectID,
+      });
+      fetchSubjectName(note.SubjectID);
+    }
+  }, [note]);
 
-    const handleTitleChange = (e) => {
+  const fetchSubjectName = (subjectID) => {
+    axios
+      .get(`http://localhost:9000/api/subject/${subjectID}`)
+      .then((response) => {
         setNoteData((prevNoteData) => ({
-            ...prevNoteData,
-            Title: e.target.value,
+          ...prevNoteData,
+          SubjectName: response.data.SubjectName,
         }));
-    };
+      })
+      .catch((error) => {
+        console.error('Error fetching subject name:', error);
+      });
+  };
 
-    const handleContentChange = (e) => {
-        setNoteData((prevNoteData) => ({
-            ...prevNoteData,
-            Content: e.target.value,
-        }));
-    };
+  const handleTitleChange = (e) => {
+    setNoteData((prevNoteData) => ({
+      ...prevNoteData,
+      Title: e.target.value,
+    }));
+  };
 
-    return (
-        <div className="note-page-container">
-            <div className="note-page-edit-button">
-                {editMode ? (
-                    <button onClick={handleEditNote}>Save</button>
-                ) : (
-                    <button onClick={() => setEditMode(true)}>Edit</button>
-                )}
-            </div>
-            <div className="note-page-content-container">
-                {editMode ? (
-                    <>
-                        <input
-                            type="text"
-                            value={noteData.Title}
-                            onChange={handleTitleChange}
-                        />
-                        <input
-                            type="text"
-                            value={noteData.Content}
-                            onChange={handleContentChange}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <h1>{noteData.Title}</h1>
-                        <h2>{noteData.SubjectName || noteData.SubjectID}</h2>
-                        <div className="note-page-content">
-                            <p>{noteData.Content}</p>
-                        </div>
-                    </>
-                )}
-            </div>
-            <div className="note-page-back-button">
-                <button onClick={onClose}>Back</button>
-            </div>
-        </div>
-    );
+  const handleContentChange = (e) => {
+    setNoteData((prevNoteData) => ({
+      ...prevNoteData,
+      Content: e.target.value,
+    }));
+  };
+
+  return (
+    <div className="note-page-container">
+      <div className="note-page-edit-button">
+        {editMode ? (
+          <button onClick={handleEditNote}>Save</button>
+        ) : (
+          <button onClick={() => setEditMode(true)}>Edit</button>
+        )}
+      </div>
+      <div className="note-page-content-container">
+        {editMode ? (
+          <>
+            <input
+              type="text"
+              value={noteData.Title}
+              onChange={handleTitleChange}
+            />
+            <input
+              type="text"
+              value={noteData.Content}
+              onChange={handleContentChange}
+            />
+          </>
+        ) : (
+          <>
+            <h1 dangerouslySetInnerHTML={{ __html: formatContent(noteData.Title) }} />
+            <h2 dangerouslySetInnerHTML={{ __html: formatContent(noteData.SubjectName || noteData.SubjectID) }} />
+            <div
+              className="note-page-content"
+              dangerouslySetInnerHTML={{ __html: formatContent(noteData.Content) }}
+            />
+          </>
+        )}
+      </div>
+      <div className="note-page-back-button">
+        <button onClick={onClose}>Back</button>
+      </div>
+    </div>
+  );
 }
 
 export default NotePage;
