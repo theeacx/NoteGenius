@@ -60,7 +60,7 @@ const TagSelectionPopup = ({ selectedNoteID, existingTags, onSelectTags, onClose
                   type="checkbox"
                   className="tag-checkbox"
                   checked={selectedTags.includes(tag.TagName)}
-                  onChange={(e) => handleTagToggle(tag.TagName, e.target.checked)}
+                  onChange={(e) => handleTagToggle(tag.TagID, e.target.checked)}
                 />
                 {tag.TagName}
               </label>
