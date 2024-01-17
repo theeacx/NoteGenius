@@ -172,18 +172,32 @@ async function updateTagsByNoteId(noteId, tags) {
     // Delete all existing tags for the note
     await NoteTag.destroy({ where: { NoteID: noteId } });
 
-    // Prepare new tags for the note (assumes tags array contains TagID)
-    const newTags = tags.map(tag => ({
-      NoteID: noteId,
-      TagID: tag.TagID
-    }));
-
-    // Create new associations
+    // Add the new tags
+    const newTags = tags.map(tagId => ({ NoteID: noteId, TagID: tagId }));
     await NoteTag.bulkCreate(newTags);
 
     return { error: false, msg: "Tags updated successfully" };
   } catch (error) {
     console.error('Error during updating tags for the note:', error);
+    throw error;
+  }
+
+}
+
+async function deleteTagFromNoteByNoteId(noteId, tagId) {
+  try {
+    const note = await Note.findByPk(noteId);
+    if (!note) {
+      console.error('No note found with id:', noteId);
+      return { error: true, msg: "Invalid note id" };
+    }
+
+    // Delete all existing tags for the note
+    await NoteTag.destroy({ where: { NoteID: noteId, TagID: tagId } });
+
+    return { error: false, msg: "Tag deleted successfully" };
+  } catch (error) {
+    console.error('Error during deleting tags for the note:', error);
     throw error;
   }
 }
@@ -269,5 +283,6 @@ export{
     getNotesWithFilterAndPagination,
     getNotesByUserId,
     getTagsByNoteId,
-    updateTagsByNoteId
+    updateTagsByNoteId,
+    deleteTagFromNoteByNoteId
 };

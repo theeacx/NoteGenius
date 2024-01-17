@@ -225,6 +225,7 @@ const MainPage = ({ userId }) => {
                     userid={note.UserID}
                     subjectid={note.SubjectID}
                     groupid={1} // note.GroupID
+                    note= {note}
                     tags={tags[note.NoteID] || []}
                     selectedTag={selectedTag} // Pass the selected tag to MyCard
                     onDoubleClick={() =>

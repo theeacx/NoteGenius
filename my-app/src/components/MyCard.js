@@ -1,4 +1,3 @@
-// MyCard.js
 import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import MyTag from './MyTag';
@@ -47,12 +46,13 @@ function MyCard(props) {
 
   const handleTagSelection = (selectedTags) => {
     // Update the tags for the current card
-   // props.onTagsUpdate(selectedTags); //!!!!!!!!!!!!comentat sa nu apara de 2 ori
-
+    // props.onTagsUpdate(selectedTags); // Commented out to avoid duplication
 
     // Close the tag selection pop-up
     setIsTagSelectionOpen(false);
-    setSelectedTags(selectedTags);
+
+    // Use the functional form of setState to ensure you're working with the latest state
+    setSelectedTags((prevTags) => [...selectedTags]);
   };
 
   useEffect(() => {
@@ -104,7 +104,7 @@ function MyCard(props) {
 
         {isTagSelectionOpen && (
           <TagSelectionPopup
-            selectedSubjectID={props.subjectid}
+            selectedNoteID={props.note.NoteID}
             existingTags={selectedTags}
             onSelectTags={(selectedTags) => handleTagSelection(selectedTags)}
             onClose={() => setIsTagSelectionOpen(false)}
