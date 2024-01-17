@@ -10,18 +10,6 @@ function MyCard(props) {
   const [subject, setSubject] = useState(null);
   const [isTagSelectionOpen, setIsTagSelectionOpen] = useState(false); 
   const [selectedTags, setSelectedTags] = useState(props.tags);
-  const [tagDetails, setTagDetails] = useState({});
-
-  const fetchTagDetails = async () => {
-    try {
-      // Replace with your actual API endpoint to fetch tag details
-      const response = await axios.get('http://localhost:9000/api/tags');
-      setTagDetails(response.data);
-    } catch (error) {
-      console.error('Error fetching tag details:', error);
-    }
-  };
-
 
   const getSubjectById = async (id) => {
     try {
@@ -67,31 +55,28 @@ function MyCard(props) {
 
 
   const handleTagSelection = async(selectedTags) => {
-    console.log("Selected Tags (IDs):", selectedTags); // Debugging line
+    // Update the tags for the current card
+    // props.onTagsUpdate(selectedTags); // Commented out to avoid duplication
 
-    // Update the tags for the current card in the backend
-    await updateTagsInBackend(props.note.NoteID, selectedTags);
-  
     // Close the tag selection pop-up
+    await updateTagsInBackend(props.note.NoteID, selectedTags);
     setIsTagSelectionOpen(false);
-  
-    // Update the selected tags in state
-    setSelectedTags(selectedTags);
+
+    // Use the functional form of setState to ensure you're working with the latest state
+    setSelectedTags((prevTags) => [...selectedTags]);
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchTagDetails();
-      if (props.userid) {
-        await getUserById(props.userid);
-      }
-      if (props.subjectid) {
-        await getSubjectById(props.subjectid);
-      }
-    };
-    fetchData();
+    if (props.userid) {
+      getUserById(props.userid);
+    }
+
+    if (props.subjectid) {
+      getSubjectById(props.subjectid);
+    }
+
     setSelectedTags(props.tags);
-  }, [props.userid, props.subjectid, props.tags]); 
+  }, [props.userid, props.subjectid, props.tags]);
 
   const getTagColor = (tagName) => {
     const tagColors = {
@@ -114,20 +99,14 @@ function MyCard(props) {
     return tagColors[tagName] || 'transparent';
   };
 
-  const getTagNameById = (tagId) => {
-    const tagName = tagDetails[tagId]?.TagName || 'Unknown Tag';
-    console.log(`Tag ID: ${tagId}, Tag Name: ${tagName}`); // Debugging line
-    return tagName;
-  };
-
   return (
     <Card>
       <Card.Body>
         <Card.Title>{props.title}</Card.Title>
         {user && <Card.Text>{user.FirstName} {user.LastName}</Card.Text>}
         {subject && <Card.Text>{subject.SubjectName}</Card.Text>}
-        {selectedTags.map((tagId, index) => (
-          <MyTag key={index} text={getTagNameById(tagId)} color={getTagColor(getTagNameById(tagId))} />
+        {selectedTags.map((tag, index) => (
+          <MyTag key={index} text={tag} color={getTagColor(tag)} />
         ))}
 
         <button id="addTagButton" onClick={() => setIsTagSelectionOpen(true)}>
@@ -138,7 +117,7 @@ function MyCard(props) {
           <TagSelectionPopup
             selectedNoteID={props.note.NoteID}
             existingTags={selectedTags}
-            onSelectTags={(selectedTagIds) => handleTagSelection(selectedTagIds)}
+            onSelectTags={(selectedTags) => handleTagSelection(selectedTags)}
             onClose={() => setIsTagSelectionOpen(false)}
           />
         )}
