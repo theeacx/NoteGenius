@@ -172,11 +172,13 @@ async function updateTagsByNoteId(noteId, tags) {
     // Delete all existing tags for the note
     await NoteTag.destroy({ where: { NoteID: noteId } });
 
-    // Create new tags for the note
+    // Prepare new tags for the note (assumes tags array contains TagID)
     const newTags = tags.map(tag => ({
       NoteID: noteId,
-      TagName: tag.TagName
+      TagID: tag.TagID
     }));
+
+    // Create new associations
     await NoteTag.bulkCreate(newTags);
 
     return { error: false, msg: "Tags updated successfully" };
@@ -185,6 +187,7 @@ async function updateTagsByNoteId(noteId, tags) {
     throw error;
   }
 }
+
 
 // async function getNotesWithFilterAndPagination(filter) {
 //   // Set default pagination

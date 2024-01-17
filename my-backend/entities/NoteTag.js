@@ -7,12 +7,19 @@ const NoteTag = db.define('NoteTag', {
   NoteID: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    primaryKey: true
   },
   TagID: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    primaryKey: true
   },
+}, {
+  tableName: 'notetags',
+  timestamps: false,
+  freezeTableName: true
 });
+
 
 // Export the NoteTag model
 export default NoteTag;
