@@ -88,13 +88,24 @@ function NotePage({ note, onClose, onNoteUpdated }) {
     }));
   };
 
+  const handleShareViaEmail = () => {
+    const subject = encodeURIComponent(noteData.SubjectName || noteData.SubjectID);
+    const body = encodeURIComponent(`${noteData.Title}\n\n${noteData.Content}`);
+
+    const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+  };
+
   return (
     <div className="note-page-container">
       <div className="note-page-edit-button">
         {editMode ? (
           <button onClick={handleEditNote}>Save</button>
         ) : (
-          <button onClick={() => setEditMode(true)}>Edit</button>
+          <>
+            <button onClick={() => setEditMode(true)}>Edit</button>
+            <button onClick={handleShareViaEmail}>Share via Email</button>
+          </>
         )}
       </div>
       <div className="note-page-content-container">
