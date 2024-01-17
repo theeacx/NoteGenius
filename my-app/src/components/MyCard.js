@@ -31,6 +31,7 @@ function MyCard(props) {
     }
   };
 
+
   const handleViewClick = () => {
     if (typeof props.onDoubleClick === 'function') {
       props.onDoubleClick(props.noteID);
@@ -44,11 +45,21 @@ function MyCard(props) {
     }
   };
 
-  const handleTagSelection = (selectedTags) => {
+  const updateTagsInBackend = async (noteId, tags) => {
+    try {
+      await axios.put(`http://localhost:9000/note/${noteId}/tagsUpdate`, { tags });
+    } catch (error) {
+      console.error('Error during updating the tags for the note:', error);
+    }
+  };
+
+
+  const handleTagSelection = async(selectedTags) => {
     // Update the tags for the current card
     // props.onTagsUpdate(selectedTags); // Commented out to avoid duplication
 
     // Close the tag selection pop-up
+    await updateTagsInBackend(props.note.NoteID, selectedTags);
     setIsTagSelectionOpen(false);
 
     // Use the functional form of setState to ensure you're working with the latest state
