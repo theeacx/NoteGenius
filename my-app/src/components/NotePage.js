@@ -96,6 +96,7 @@ function NotePage({ note, onClose, onNoteUpdated }) {
     window.location.href = mailtoLink;
   };
 
+
   return (
     <div className="note-page-container">
       <div className="note-page-edit-button">
