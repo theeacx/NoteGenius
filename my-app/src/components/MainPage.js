@@ -56,25 +56,31 @@ const MainPage = ({ userId }) => {
   };
 
   const handleSubjectTagFilter = (subjectID, selectedTag) => {
-    const filteredBySubject = personalNotes.filter(
-      (note) => note.SubjectID.toString() === subjectID
-    );
+    let filteredNotes = personalNotes;
 
-    let filteredNotes = filteredBySubject;
-
-    if (selectedTag) {
-      // If a tag is selected, further filter by the tag
-      filteredNotes = filteredBySubject.filter((note) =>
-        tags[note.NoteID]?.includes(selectedTag)
-      );
+    // Apply Subject Filter
+    if (subjectID) {
+        filteredNotes = filteredNotes.filter(
+            (note) => note.SubjectID.toString() === subjectID
+        );
     }
 
-    const filteredBySearch = filteredNotes.filter((note) =>
-      note.Title.toLowerCase().includes(searchQuery)
-    );
+    // Apply Tag Filter
+    if (selectedTag) {
+        filteredNotes = filteredNotes.filter((note) =>
+            tags[note.NoteID]?.includes(selectedTag)
+        );
+    }
 
-    setFilteredNotes(filteredBySearch);
-  };
+    // Apply Search Query Filter
+    if (searchQuery) {
+        filteredNotes = filteredNotes.filter((note) =>
+            note.Title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }
+
+    setFilteredNotes(filteredNotes);
+};
 
   const handleTagSelect = (selectedTag) => {
     // Update the selected tag
@@ -154,6 +160,7 @@ const MainPage = ({ userId }) => {
   const handleHomeClick = () => {
     setSearchQuery('');
     setSelectedSubject('');
+    setSelectedTag(null);
     setFilteredNotes(personalNotes);
   };
 
