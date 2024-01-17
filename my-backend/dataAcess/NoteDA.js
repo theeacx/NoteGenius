@@ -137,13 +137,29 @@ async function getNotesWithFilterAndPagination(filter) {
   });
 }
 
-async function getTagsByNoteId(id) {
-  const note = await Note.findByPk(id, { include: { model: Tag, as: 'NoteTags' } });
-  if (!note) {
-    return [];
+async function getTagsByNoteId(noteId) {
+  try {
+    const noteWithTags = await Note.findByPk(noteId, {
+      include: [{
+        model: Tag,
+        as: 'Tags', // Make sure 'Tags' is the correct alias for the association
+        through: { attributes: [] } // Exclude the join table attributes
+      }]
+    });
+
+    if (!noteWithTags) {
+      console.error('No note found with id:', noteId);
+      return [];
+    }
+
+    // Assuming 'Tags' is an array of Tag instances
+    return noteWithTags.Tags.map(tag => tag.get({ plain: true })); 
+  } catch (error) {
+    console.error('Error during retrieving tags for the note:', error);
+    throw error;
   }
-  return note.Tags;
 }
+
 // async function getNotesWithFilterAndPagination(filter) {
 //   // Set default pagination
 //   const take = filter.take ? parseInt(filter.take) : 100;

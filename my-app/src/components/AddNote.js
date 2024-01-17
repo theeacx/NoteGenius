@@ -111,7 +111,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
             ))}
           </select>
 
-          <label htmlFor="tagSelect">Select Tag:</label>
+          {/* <label htmlFor="tagSelect">Select Tag:</label>
           <select
           id="tagSelect"
           className="form-select"
@@ -126,7 +126,7 @@ function AddNote({ user, onNoteAdded, funcSubjectChange }) {
               {tag.TagName}
             </option>
           ))}
-        </select>
+        </select> */}
 
           <label htmlFor="noteTitle">Note Title:</label>
           <input
