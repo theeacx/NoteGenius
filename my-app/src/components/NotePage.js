@@ -3,6 +3,11 @@ import axios from 'axios';
 import '../components-style/NotePage.css';
 
 function formatContent(content) {
+    if (typeof content !== 'string') {
+      console.error('Content is not a string:', content);
+      return content;
+    }
+  
     const styleMapping = {
       h1: 'color: #ca99ff; font-size: 24px; font-weight: bold;',
       h2: 'color: #a3b6ff; font-size: 20px; font-weight: bold;',
