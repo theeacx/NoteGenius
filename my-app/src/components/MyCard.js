@@ -63,7 +63,9 @@ function MyCard(props) {
     if (props.subjectid) {
       getSubjectById(props.subjectid);
     }
-  }, [props.userid, props.subjectid]);
+
+    setSelectedTags(props.tags);
+  }, [props.userid, props.subjectid, props.tags]);
 
   const getTagColor = (tagName) => {
     const tagColors = {
