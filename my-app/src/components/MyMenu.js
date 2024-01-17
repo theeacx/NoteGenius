@@ -63,7 +63,7 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
   return (
     <div className="menu-container">
       <h3 className="menu-title">Menu</h3>
-      <input type="text" placeholder="Search.." name="search" className="menu-search" />
+      {/* <input type="text" placeholder="Search.." name="search" className="menu-search" /> */}
       <ul className="menu-options">
         <li className="menu-option home-button" onClick={handleHomeClick}>Home</li>
         <label htmlFor="subjectSelect">Subjects</label>
