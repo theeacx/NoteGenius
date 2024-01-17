@@ -12,7 +12,29 @@ const MainPage = ({ userId }) => {
   const [selectedNote, setSelectedNote] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredNotes, setFilteredNotes] = useState([]);
+  const [tags, setTags] = useState([]);
 
+  const fetchAllTags = async () => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/notes`);
+      const tagsMap = {};
+      
+      response.data.forEach((note) => {
+        const noteId = note.NoteID;
+        const tags = note.Tags.map((tag) => tag.TagName);
+        tagsMap[noteId] = tags;
+      });
+  
+      console.log('Tags:', tagsMap);
+      setTags(tagsMap);
+    } catch (error) {
+      console.error('Error fetching tags:', error);
+    }
+  };
+  
+  
+ 
+  
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -108,6 +130,7 @@ const MainPage = ({ userId }) => {
   useEffect(() => {
     if (userId) {
       getNotesByUserId(userId);
+      fetchAllTags();
     }
   }, [userId]);
 
@@ -148,7 +171,7 @@ const MainPage = ({ userId }) => {
                     userid={note.UserID}
                     subjectid={note.SubjectID}
                     groupid={1} // note.GroupID
-                    tags={["imi", "e", "rau"]}
+                    tags={tags[note.NoteID] || []}
                     onDoubleClick={() =>
                       handleCardClick(note)
                     }

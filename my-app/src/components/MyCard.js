@@ -79,13 +79,9 @@ function MyCard(props) {
         <Card.Title>{props.title}</Card.Title>
         {user && <Card.Text>{user.FirstName} {user.LastName}</Card.Text>}
         {subject && <Card.Text>{subject.SubjectName}</Card.Text>}
-
-        <div>
-  {props.tags.map((tag, index) => (
-    // <MyTag key={index} text={tag.TagName} color={getTagColor(tag.TagName)} />
-    <MyTag key={index} text={tag} color={getTagColor(tag)} />
-  ))}
-</div>
+        {props.tags.map((tag, index) => (
+          <MyTag key={index} text={tag} color={getTagColor(tag)} />
+        ))}
 
         <button id="viewButton" onClick={handleViewClick}>
           View
