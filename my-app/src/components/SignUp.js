@@ -13,6 +13,8 @@ function SignUp({ onSignUpSuccess }) {
   const [error, setError] = useState('');
   const [showMainPage, setShowMainPage] = useState(false);
 
+  const [userID, setUserID] = useState(null);
+
   const handlePasswordMatch = () => {
     if (password !== confirmPassword) {
       setError("Passwords do not match. Please check and try again.");
@@ -32,6 +34,7 @@ function SignUp({ onSignUpSuccess }) {
       })
       .then((response) => {
         console.log("User created successfully:", response.data);
+        setUserID(response.data.UserID);
         onSignUpSuccess();
         setShowMainPage(true);  
       })
@@ -45,7 +48,7 @@ function SignUp({ onSignUpSuccess }) {
   return (
     <div>
       {showMainPage ? (
-        <MainPage />
+        <MainPage userId={userID} />
       ) : (
         <header className="App-header">
         <div className="signup-container">
