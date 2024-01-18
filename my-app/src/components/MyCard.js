@@ -47,7 +47,7 @@ function MyCard(props) {
 
   const handleTagSelection = (selectedTags) => {
     // Update the tags for the current card
-    props.onTagsUpdate(selectedTags);
+   // props.onTagsUpdate(selectedTags); //!!!!!!!!!!!!comentat sa nu apara de 2 ori
 
 
     // Close the tag selection pop-up
