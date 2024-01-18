@@ -185,6 +185,7 @@ async function prepareTagsAndUpdate(noteId, tagNames) {
 
 
 
+// //update the tags for a note
 async function updateTagsByNoteId(noteId, tags) {
   console.log('Updating tags for noteId:', noteId, 'Tags:', tags);
 
@@ -195,14 +196,13 @@ async function updateTagsByNoteId(noteId, tags) {
       return { error: true, msg: "Invalid note id" };
     }
 
-    // Remove all existing tags for the note
-    await NoteTag.destroy({ where: { NoteID: noteId } });
+    // Assuming that NoteTag model has a unique constraint on the combination of NoteID and TagID
+    const tagPromises = tags.map(tag => NoteTag.findOrCreate({
+      where: { NoteID: noteId, TagID: tag.TagID }
+    }));
 
-    // Create new tags for the note
-    const newTags = tags.map(tag => ({ NoteID: noteId, TagID: tag.TagID }));
-
-    // Add the new tags
-    await NoteTag.bulkCreate(newTags);
+    // Wait for all the findOrCreate operations to complete
+    await Promise.all(tagPromises);
 
     return { error: false, msg: "Tags updated successfully" };
   } catch (error) {
@@ -210,6 +210,49 @@ async function updateTagsByNoteId(noteId, tags) {
     return { error: true, msg: error.message || 'Error during updating tags for the note' };
   }
 }
+// async function updateTagsByNoteId(noteId, tags) {
+//   console.log('Updating tags for noteId:', noteId, 'Tags:', tags);
+
+//   try {
+//     const note = await Note.findByPk(noteId);
+//     if (!note) {
+//       console.error('No note found with id:', noteId);
+//       return { error: true, msg: "Invalid note id" };
+//     }
+
+//     // Get existing tags for the note
+//     const existingTags = await NoteTag.findAll({
+//       where: { NoteID: noteId }
+//     });
+
+//     // Extract TagIDs from tags array
+//     const tagIds = tags.map(tag => tag.TagID);
+
+//     // Find tags to add (present in tags array but not in existingTags)
+//     const tagsToAdd = tags.filter(tag => !existingTags.some(et => et.TagID === tag.TagID));
+    
+//     // Add new tags
+//     const addTagPromises = tagsToAdd.map(tag => NoteTag.findOrCreate({
+//       where: { NoteID: noteId, TagID: tag.TagID }
+//     }));
+
+//     // Find tags to delete (present in existingTags but not in tags array)
+//     const tagsToDelete = existingTags.filter(et => !tagIds.includes(et.TagID));
+
+//     // Delete unchecked tags
+//     const deleteTagPromises = tagsToDelete.map(tag => NoteTag.destroy({
+//       where: { NoteID: noteId, TagID: tag.TagID }
+//     }));
+
+//     // Wait for all operations to complete
+//     await Promise.all([...addTagPromises, ...deleteTagPromises]);
+
+//     return { error: false, msg: "Tags updated successfully" };
+//   } catch (error) {
+//     console.error('Error during updating tags for the note:', error);
+//     return { error: true, msg: error.message || 'Error during updating tags for the note' };
+//   }
+// }
 
 
 
