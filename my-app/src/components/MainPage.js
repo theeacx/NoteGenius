@@ -220,12 +220,12 @@ const MainPage = ({ userId }) => {
                 .map((note) => (
                   <MyCard
                     key={note.NoteID}
+                    noteID={note.NoteID} // Explicitly pass noteID as a prop
                     title={note.Title}
                     content={note.Content}
                     userid={note.UserID}
                     subjectid={note.SubjectID}
                     groupid={1} // note.GroupID
-                    note= {note}
                     tags={tags[note.NoteID] || []}
                     selectedTag={selectedTag} // Pass the selected tag to MyCard
                     onDoubleClick={() =>

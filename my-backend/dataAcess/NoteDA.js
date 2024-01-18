@@ -4,6 +4,7 @@ import Subject from '../entities/Subject.js';
 import User from '../entities/User.js';
 import LikeOp from "./Operators.js"
 import NoteTag from '../entities/NoteTag.js';
+import axios from 'axios';
 
 async function getNotes() {
     return await Note.findAll({include: ["Tags", "Subject","User"]});
@@ -159,9 +160,35 @@ async function getTagsByNoteId(noteId) {
     throw error;
   }
 }
+async function prepareTagsAndUpdate(noteId, tagNames) {
+  try {
+    // Fetch the full list of tags to get their IDs
+    const allTagsResponse = await axios.get('http://localhost:9000/api/tags');
+    const allTags = allTagsResponse.data;
+
+    // Map tag names to tag IDs
+    const tagsWithIDs = tagNames.map(tagName => {
+      const tag = allTags.find(t => t.TagName === tagName);
+      if (!tag) {
+        throw new Error(`Tag not found for name: ${tagName}`);
+      }
+      return { TagID: tag.TagID };
+    });
+
+    // Call updateTagsByNoteId with the mapped tags
+    return await updateTagsByNoteId(noteId, tagsWithIDs);
+  } catch (error) {
+    console.error('Error preparing tags:', error);
+    throw error;
+  }
+}
+
+
 
 //update the tags for a note
 async function updateTagsByNoteId(noteId, tags) {
+  console.log('Updating tags for noteId:', noteId, 'Tags:', tags);
+
   try {
     const note = await Note.findByPk(noteId);
     if (!note) {
@@ -172,16 +199,31 @@ async function updateTagsByNoteId(noteId, tags) {
     // Delete all existing tags for the note
     await NoteTag.destroy({ where: { NoteID: noteId } });
 
-    // Add the new tags
-    const newTags = tags.map(tagId => ({ NoteID: noteId, TagID: tagId }));
+    // Prepare new tags for the note
+    // Ensure the tags array contains objects with TagID property
+    const newTags = tags.map(tag => {
+      // Here, you should make sure that tag contains the TagID property
+      // and that it is not null or undefined.
+      if (!tag.TagID) {
+        // Handle the case where TagID is not provided or is invalid
+        console.error('TagID is missing or invalid:', tag);
+        throw new Error('TagID is missing or invalid');
+      }
+
+      return {
+        NoteID: noteId,
+        TagID: tag.TagID, // Use TagID from the tag object
+      };
+    });
+
+    // Create new associations
     await NoteTag.bulkCreate(newTags);
 
     return { error: false, msg: "Tags updated successfully" };
   } catch (error) {
     console.error('Error during updating tags for the note:', error);
-    throw error;
+    return { error: true, msg: error.message || 'Error during updating tags for the note' };
   }
-
 }
 
 async function deleteTagFromNoteByNoteId(noteId, tagId) {
@@ -284,5 +326,6 @@ export{
     getNotesByUserId,
     getTagsByNoteId,
     updateTagsByNoteId,
-    deleteTagFromNoteByNoteId
+    deleteTagFromNoteByNoteId,
+    prepareTagsAndUpdate
 };

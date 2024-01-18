@@ -1,3 +1,4 @@
+// MyCard.js
 import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import MyTag from './MyTag';
@@ -31,7 +32,6 @@ function MyCard(props) {
     }
   };
 
-
   const handleViewClick = () => {
     if (typeof props.onDoubleClick === 'function') {
       props.onDoubleClick(props.noteID);
@@ -45,26 +45,24 @@ function MyCard(props) {
     }
   };
 
-  const updateTagsInBackend = async (noteId, tags) => {
-    try {
-      await axios.put(`http://localhost:9000/note/${noteId}/tagsUpdate`, { tags });
-    } catch (error) {
-      console.error('Error during updating the tags for the note:', error);
-    }
-  };
+  const handleTagSelection = async (selectedTagIDs) => {
+  setIsTagSelectionOpen(false);
+  setSelectedTags(selectedTagIDs);
 
+  // Transform the selectedTagIDs into the required format
+  const tagData = selectedTagIDs.map(tagID => ({
+    NoteID: props.noteID,
+    TagID: tagID
+  }));
 
-  const handleTagSelection = async(selectedTags) => {
-    // Update the tags for the current card
-    // props.onTagsUpdate(selectedTags); // Commented out to avoid duplication
+  try {
+    await axios.put(`http://localhost:9000/api/note/${props.noteID}/tags`, tagData);
+    console.log('Tags updated for note', props.noteID);
+  } catch (error) {
+    console.error('Error updating tags:', error);
+  }
+};
 
-    // Close the tag selection pop-up
-    await updateTagsInBackend(props.note.NoteID, selectedTags);
-    setIsTagSelectionOpen(false);
-
-    // Use the functional form of setState to ensure you're working with the latest state
-    setSelectedTags((prevTags) => [...selectedTags]);
-  };
 
   useEffect(() => {
     if (props.userid) {
@@ -115,7 +113,7 @@ function MyCard(props) {
 
         {isTagSelectionOpen && (
           <TagSelectionPopup
-            selectedNoteID={props.note.NoteID}
+            selectedSubjectID={props.subjectid}
             existingTags={selectedTags}
             onSelectTags={(selectedTags) => handleTagSelection(selectedTags)}
             onClose={() => setIsTagSelectionOpen(false)}
