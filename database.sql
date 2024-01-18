@@ -32,7 +32,15 @@ INSERT INTO `note` (`NoteID`, `Title`, `Content`, `SubjectID`, `UserID`) VALUES
 	(14, 'dsad my love', 'urasc dsad dsad e sufletu meu', 10, 3),
 	(16, 'seminar1', 'nice meeting the prof', 9, 3),
 	(22, 'react', '<h1>This is a Heading 1</h1>\n<h2>This is a Heading 2</h2>\n<p>This is a paragraph with some <strong>bold text</strong> and <em>italic text</em>.</p>\n<p>Another paragraph with <u>underlined text</u>.</p>', 5, 3),
-	(23, 'overriding', 'poo content', 4, 3);
+	(23, 'overriding', 'poo content', 4, 3),
+	(24, 'Eigen values', '<h1>This is my eigen values</h1>\n<h2>seminar</h2>\n<p>bla <strong>bla</strong> and <em>bla</em>.</p>\n<p>Another paragraph with <u>bla</u>.</p>', 15, 6),
+	(25, 'crash course', 'my crash course', 14, 6),
+	(26, 'c1', 'ccc', 15, 6),
+	(27, 'seminar1', 'adgj', 13, 6),
+	(29, 'n1', 'orice', 17, 7),
+	(30, 'n2', 'orice iar', 19, 7),
+	(31, 'n3', 'orivce iar iar', 19, 7),
+	(32, 'n4', 'orice iar iar iar', 18, 7);
 
 CREATE TABLE IF NOT EXISTS `notetags` (
   `NoteID` int(11) NOT NULL,
@@ -48,14 +56,14 @@ INSERT INTO `notetags` (`NoteID`, `TagID`) VALUES
 	(2, 1),
 	(14, 1),
 	(16, 1),
-	(23, 1),
+	(24, 1),
 	(1, 2),
-	(2, 2),
 	(9, 2),
 	(13, 2),
 	(14, 2),
 	(16, 2),
 	(23, 2),
+	(24, 2),
 	(1, 3),
 	(2, 3),
 	(16, 3),
@@ -88,7 +96,15 @@ INSERT INTO `subject` (`SubjectID`, `SubjectName`, `UserID`) VALUES
 	(7, 'paw', 3),
 	(9, 'android', 3),
 	(10, 'dsad', 3),
-	(11, 'econometrie', 3);
+	(11, 'econometrie', 3),
+	(12, 'YOUTUBE VIDEO', 3),
+	(13, 'web', 6),
+	(14, 'react crash course', 6),
+	(15, 'micro', 6),
+	(16, 'web', 7),
+	(17, 'paw', 7),
+	(18, 'java', 7),
+	(19, 'micro', 7);
 
 CREATE TABLE IF NOT EXISTS `tag` (
   `TagID` int(11) NOT NULL AUTO_INCREMENT,
@@ -121,9 +137,11 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`UserID`, `Email`, `Password`, `FirstName`, `LastName`) VALUES
 	(1, 'user@example.com', 'securepassword123', 'Jane', 'Doe'),
 	(2, 'user@example.com', 'securepassword123', 'Jane', 'Doe'),
-	(3, 'l', '1', 'Teodora', 'Licxandru'),
-	(4, 'licxandruteodora21@stud.ase.ro', '1111', 'Teodora', 'Licxandru'),
-	(5, 'ursulaursus@stud.ase.ro', '1', 'Ursula', 'Ursus');
+	(3, 'licxandruteodora@stud.ase.ro', '1234', 'Teodora', 'Licxandru'),
+	(4, 'lt@stud.ase.ro', '1111', 'Teodora', 'Licxandru'),
+	(5, 'ursulaursus@stud.ase.ro', '1', 'Ursula', 'Ursus'),
+	(6, 'nistorstefana@stud.ase.ro', '1111', 'Stefana', 'Nistor'),
+	(7, 'petrescuroxana@stud.ase.ro', '1111', 'Roxana', 'Petrescu');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
