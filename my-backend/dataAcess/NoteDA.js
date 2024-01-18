@@ -196,28 +196,13 @@ async function updateTagsByNoteId(noteId, tags) {
       return { error: true, msg: "Invalid note id" };
     }
 
-    // Delete all existing tags for the note
-    await NoteTag.destroy({ where: { NoteID: noteId } });
+    // Assuming that NoteTag model has a unique constraint on the combination of NoteID and TagID
+    const tagPromises = tags.map(tag => NoteTag.findOrCreate({
+      where: { NoteID: noteId, TagID: tag.TagID }
+    }));
 
-    // Prepare new tags for the note
-    // Ensure the tags array contains objects with TagID property
-    const newTags = tags.map(tag => {
-      // Here, you should make sure that tag contains the TagID property
-      // and that it is not null or undefined.
-      if (!tag.TagID) {
-        // Handle the case where TagID is not provided or is invalid
-        console.error('TagID is missing or invalid:', tag);
-        throw new Error('TagID is missing or invalid');
-      }
-
-      return {
-        NoteID: noteId,
-        TagID: tag.TagID, // Use TagID from the tag object
-      };
-    });
-
-    // Create new associations
-    await NoteTag.bulkCreate(newTags);
+    // Wait for all the findOrCreate operations to complete
+    await Promise.all(tagPromises);
 
     return { error: false, msg: "Tags updated successfully" };
   } catch (error) {
@@ -225,6 +210,7 @@ async function updateTagsByNoteId(noteId, tags) {
     return { error: true, msg: error.message || 'Error during updating tags for the note' };
   }
 }
+
 
 async function deleteTagFromNoteByNoteId(noteId, tagId) {
   try {
