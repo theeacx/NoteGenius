@@ -30,15 +30,25 @@ function App() {
       throw error; 
     }
   };
+
+  const handleSignOut = () => {
+    setRedirectToMain(false);
+    setShowSignIn(true);
+    setUserId(null);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         {showSignIn && <SignIn onSignIn={handleSignIn} />}
-        {redirectToMain && <MainPage userId={userId} />} 
+        {redirectToMain && <MainPage userId={userId} onLogOut={handleSignOut} />} 
       </header>
     </div>
   );
+
+
 }
+
 
 // console.log('User ID:', userId);
 

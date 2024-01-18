@@ -8,7 +8,7 @@ import NotePage from './NotePage';
 import '../components-style/MainPage.css';
 import '../components-style/TagSelectionPopup.css'; 
 
-const MainPage = ({ userId }) => {
+const MainPage = ({ userId, onLogOut }) => {
   const [personalNotes, setPersonalNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');

@@ -5,7 +5,7 @@ import AddSubject from './AddSubject';
 import { useState } from 'react';
 import axios from 'axios';
 
-const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSelect }) => {
+const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSelect, onLogOut }) => {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [tags, setTags] = useState([]);
@@ -31,6 +31,10 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
     if (onHomeClick) {
       onHomeClick();
     }
+  };
+
+  const handleLogOutClick = () => {
+    onLogOut();
   };
 
   const fetchTags = (subjectID) => {
@@ -66,7 +70,7 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
       {/* <input type="text" placeholder="Search.." name="search" className="menu-search" /> */}
       <ul className="menu-options">
         <li className="menu-option home-button" onClick={handleHomeClick}>Home</li>
-        <label htmlFor="subjectSelect">Subjects</label>
+        <label htmlFor="subjectSelect"></label>
         <select
           id="subjectSelect"
           className="form-select"
@@ -83,32 +87,33 @@ const MyMenu = ({ userID, onSubjectSelect, onHomeClick, updateSubjects, onTagSel
         </select>
         <AddSubject user={userID} updateSubjects={updateSubjects} />
         <select
-  className="form-select"
-  aria-label="Default select example"
-  value={selectedTag}
-  onChange={(e) => handleTagSelect(e.target.value)}
->
-  <option value="">Select Tag</option>
-  {tags.map((tag) => (
-    <option key={tag.TagID} value={tag.TagName}>
-      {tag.TagName}
-    </option>
-  ))}
+            className="form-select"
+            aria-label="Default select example"
+            value={selectedTag}
+            onChange={(e) => handleTagSelect(e.target.value)}
+          >
+            <option value="">Select Tag</option>
+            {tags.map((tag) => (
+              <option key={tag.TagID} value={tag.TagName}>
+                {tag.TagName}
+              </option>
+            ))}
         </select>
-        <select className="form-select" aria-label="Default select example" defaultValue="Groups">
+        <li className="menu-option logOut-button" onClick={handleLogOutClick} >Log out</li>
+        {/* <select className="form-select" aria-label="Default select example" defaultValue="Groups">
           <option value="Groups">Groups</option>
           <option value="1">One</option>
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>
-        <AddGroup />
+        <AddGroup /> */}
       </ul>
-      <select className="form-select" aria-label="Default select example" defaultValue="See Groups">
+      {/* <select className="form-select" aria-label="Default select example" defaultValue="See Groups">
         <option value="SeeGroups">See Groups</option>
         <option value="1">One</option>
         <option value="2">Two</option>
         <option value="3">Three</option>
-      </select>
+      </select> */}
     </div>
   );
 };
