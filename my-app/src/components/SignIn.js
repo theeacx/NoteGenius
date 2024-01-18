@@ -50,7 +50,7 @@ function SignIn({ onSignIn }) {
   return (
     <div className="signin-container">
       <form className="signin-form" onSubmit={handleSubmit}>
-        <h1>Welcome to APPNAME!</h1>
+        <h1>Welcome to NoteGenius!</h1>
         <input style = {{marginBottom: '10px'}}
           type="text"
           placeholder="Email"
