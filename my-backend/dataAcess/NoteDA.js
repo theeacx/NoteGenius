@@ -300,75 +300,7 @@ async function deleteTagFromNoteByNoteId(noteId, tagId) {
 }
 
 
-// async function getNotesWithFilterAndPagination(filter) {
-//   // Set default pagination
-//   const take = filter.take ? parseInt(filter.take) : 100;
-//   const skip = filter.skip ? (parseInt(filter.skip) - 1) * take : 0;
 
-//   // Main where clause
-//   let whereClause = {};
-//   if (filter.Title) whereClause.Title = {[LikeOp]: `%${filter.Title}%`};
-//   if (filter.UserID) whereClause.UserID = filter.UserID;
-//   if (filter.SubjectID) whereClause.SubjectID = filter.SubjectID;
-
-//   // Include clause for Tags
-//   let tagWhereClause = {};
-//   let tagRequired = false;
-//   if (filter.TagName) {
-//     tagWhereClause.TagName = {[LikeOp]: `%${filter.TagName}%`};
-//     tagRequired = true; // Set to true only if filtering by tags
-//   }
-
-//   // Include clause for Subject
-//   let subjectWhereClause = {};
-//   let subjectRequired = false;
-//   if (filter.SubjectName) {
-//     subjectWhereClause.SubjectName = {[LikeOp]: `%${filter.SubjectName}%`};
-//     subjectRequired = true; // Set to true only if filtering by subject name
-//   }
-//   let userWhereClause = {};
-//   let userRequired = false;
-//   if (filter.FirstName) {
-//     userWhereClause.FirstName = {[LikeOp]: `%${filter.FirstName}%`};
-//     userRequired = true; // Set to true only if filtering by subject name
-//   }
-//   if(filter.LastName){
-//     userWhereClause.LastName = {[LikeOp]: `%${filter.LastName}%`};
-//     userRequired = true;
-//   }
-//   if(filter.Email){
-//     userWhereClause.Email = {[LikeOp]: `%${filter.Email}%`};
-//     userRequired = true;
-//   }
-
-//   return await Note.findAndCountAll({
-//     distinct: true,
-//     include: [
-//       {
-//         model: Tag,
-//         as: 'Tags',
-//         where: tagWhereClause,
-//         required: tagRequired // Use true if filtering by tags
-//       },
-//       {
-//         model: Subject,
-//         as: 'Subject',
-//         where: subjectWhereClause,
-//         required: subjectRequired // Use true if filtering by subject name
-//       },
-//       // Include User if necessary
-//       {
-//         model: User,
-//         as: 'User',
-//         where: userWhereClause,
-//         required: userRequired
-//       }
-//     ],
-//     where: whereClause,
-//     limit: take,
-//     offset: skip,
-//   });
-// }
 
 
 export{
