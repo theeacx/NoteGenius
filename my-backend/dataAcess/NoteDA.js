@@ -182,10 +182,7 @@ async function prepareTagsAndUpdate(noteId, tagNames) {
     throw error;
   }
 }
-
-
-
-// //update the tags for a note
+/////////////////////varianta aia in care poti sa si delte si sa adaugi da doar una cate una
 async function updateTagsByNoteId(noteId, tags) {
   console.log('Updating tags for noteId:', noteId, 'Tags:', tags);
 
@@ -196,13 +193,14 @@ async function updateTagsByNoteId(noteId, tags) {
       return { error: true, msg: "Invalid note id" };
     }
 
-    // Assuming that NoteTag model has a unique constraint on the combination of NoteID and TagID
-    const tagPromises = tags.map(tag => NoteTag.findOrCreate({
-      where: { NoteID: noteId, TagID: tag.TagID }
-    }));
+    // Remove all existing tags for the note
+    await NoteTag.destroy({ where: { NoteID: noteId } });
 
-    // Wait for all the findOrCreate operations to complete
-    await Promise.all(tagPromises);
+    // Create new tags for the note
+    const newTags = tags.map(tag => ({ NoteID: noteId, TagID: tag.TagID }));
+
+    // Add the new tags
+    await NoteTag.bulkCreate(newTags);
 
     return { error: false, msg: "Tags updated successfully" };
   } catch (error) {
@@ -210,6 +208,33 @@ async function updateTagsByNoteId(noteId, tags) {
     return { error: true, msg: error.message || 'Error during updating tags for the note' };
   }
 }
+
+/////////////////////////////////////////////////////////////////VARIANTA VECHE
+// //update the tags for a note
+// async function updateTagsByNoteId(noteId, tags) {
+//   console.log('Updating tags for noteId:', noteId, 'Tags:', tags);
+
+//   try {
+//     const note = await Note.findByPk(noteId);
+//     if (!note) {
+//       console.error('No note found with id:', noteId);
+//       return { error: true, msg: "Invalid note id" };
+//     }
+
+//     // Assuming that NoteTag model has a unique constraint on the combination of NoteID and TagID
+//     const tagPromises = tags.map(tag => NoteTag.findOrCreate({
+//       where: { NoteID: noteId, TagID: tag.TagID }
+//     }));
+
+//     // Wait for all the findOrCreate operations to complete
+//     await Promise.all(tagPromises);
+
+//     return { error: false, msg: "Tags updated successfully" };
+//   } catch (error) {
+//     console.error('Error during updating tags for the note:', error);
+//     return { error: true, msg: error.message || 'Error during updating tags for the note' };
+//   }
+// }
 // async function updateTagsByNoteId(noteId, tags) {
 //   console.log('Updating tags for noteId:', noteId, 'Tags:', tags);
 
