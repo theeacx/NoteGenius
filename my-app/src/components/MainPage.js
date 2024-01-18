@@ -244,13 +244,14 @@ const MainPage = ({ userId, onLogOut }) => {
                 ))}
             </Col>
             <Col md={4} className="menu-column">
-              <MyMenu
-                userID={userId}
-                onSubjectSelect={handleSubjectSelect}
-                onHomeClick={handleHomeClick}
-                updateSubjects={fetchSubjects}
-                onTagSelect={handleTagSelect}
-              />
+            <MyMenu
+              userID={userId}
+              onSubjectSelect={handleSubjectSelect}
+              onHomeClick={handleHomeClick}
+              updateSubjects={fetchSubjects}
+              onTagSelect={handleTagSelect}
+              onLogOut={onLogOut} 
+            />
             </Col>
           </React.Fragment>
         )}

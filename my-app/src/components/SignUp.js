@@ -45,10 +45,15 @@ function SignUp({ onSignUpSuccess }) {
     }
   };
 
+  const handleLogout = () => {
+    setShowMainPage(false);
+  }
+  
+
   return (
     <div>
       {showMainPage ? (
-        <MainPage userId={userID} />
+        <MainPage userId={userID}  onLogOut={handleLogout}/>
       ) : (
         <header className="App-header">
         <div className="signup-container">
